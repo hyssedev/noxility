@@ -3,7 +3,7 @@ import discord, os, asyncio, logging
 
 intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or('nox'), intents=intents)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or('nox '), intents=intents)
 
 bot.remove_command("help")
 
@@ -35,10 +35,11 @@ async def reload(ctx, cog=None):
         try:
             bot.unload_extension(f"cogs.{cog}")
             bot.load_extension(f"cogs.{cog}")
-            await ctx.send(f"Am reincarcat {cog}.")
-            print(f"Am reincarcat {cog}.")
+            await ctx.send(f"Successfully reloaded {cog}.")
+            print(f"Reloaded{cog}.")
         except Exception as e:
-            print(f"{cog} nu poate fi reincarcat.")
+            await ctx.send(f"I couldn't reload {cog}.")
+            print(f"{cog} couldn't be reloaded.")
             raise e
 
 """
