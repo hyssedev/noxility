@@ -104,7 +104,7 @@ class About (commands.Cog):
         ping = int((time.monotonic() - before) * 1000)
         embed = discord.Embed(title="Noxility", description="Noxility is a powerful bot with all kinds of commands.", colour=0xf2c203)
         embed.set_footer(text="Thank you for using Noxility!", icon_url=self.bot.user.avatar_url)
-        embed.add_field(name=f"**Information**", value=f"**>** **Developer:** {self.bot.get_user(199375184057073664)}\n**>** **Library:** discord.py {discord.__version__}\n**>** **Uptime**: {human_timedelta(self.bot.uptime)}", inline=False)
+        embed.add_field(name=f"**Information**", value=f"**>** **Developer:** {self.bot.get_user(199375184057073664)}\n**>** **Library:** discord.py {discord.__version__}\n**>** **Python:** {platform.python_version()}\n**>** **Uptime**: {human_timedelta(self.bot.uptime)}", inline=False)
         embed.add_field(name=f"**Statistics**",  value=f"**>** **Servers:** {str(len(self.bot.guilds))}\n**>** **Users:** {len(self.bot.users)}\n**>** **Latency:** {str(int(round(self.bot.latency * 1000, 1))+ping)}ms", inline=False)
         embed.add_field(name=f"**Links**", value=f"**>** **Support Server:** todo\n**>** **Invite:** todo\n**>** **Vote:** todo", inline=False)
         await ctx.send(embed=embed)

@@ -1,9 +1,8 @@
 from discord.ext import commands
 import discord, os, asyncio, logging
 
-intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or('nox '), intents=intents)
+bot = commands.Bot(command_prefix=['nox ', 'Nox ', 'NOX '], owner_id=199375184057073664, intents=discord.Intents.all())
 
 bot.remove_command("help")
 
@@ -30,17 +29,23 @@ async def reload(ctx, cog=None):
         if cogg.endswith(".py"):
             if cogg != "__init__.py":
                 cogs.append(cogg)
-    if cog is None: await ctx.send(f"Please specify which cog to reload. Available cogs: {cogs}.")
+    if cog is None: await ctx.send(f"Please specify which cog to reload. Available cogs: {', '.join(cogs)}.")
     else:
         try:
             bot.unload_extension(f"cogs.{cog}")
             bot.load_extension(f"cogs.{cog}")
             await ctx.send(f"Successfully reloaded {cog}.")
-            print(f"Reloaded{cog}.")
+            print(f"Reloaded {cog}.")
         except Exception as e:
             await ctx.send(f"I couldn't reload {cog}.")
             print(f"{cog} couldn't be reloaded.")
             raise e
+
+@bot.command(aliases=['disconnect', 'close', 'stopbot'])
+@commands.is_owner()
+async def logout(ctx):
+    await ctx.send("Noxility logging out.")
+    await bot.logout()
 
 """
 # logging system
@@ -51,4 +56,4 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 logger.addHandler(handler)
 """
 
-bot.run("")
+bot.run("Nzg1MTI4MjI4MjEyNzAzMjMz.X8zVpA.uPGZzBpz1sW6LXEtUoPzW8W52zo")
