@@ -1,21 +1,22 @@
 from discord.ext import commands
 import discord, os, asyncio, logging
-
+import cogs._utils
 
 bot = commands.Bot(command_prefix=['nox ', 'Nox ', 'NOX '], owner_id=199375184057073664, intents=discord.Intents.all())
-
 bot.remove_command("help")
+logging.basicConfig(level=logging.INFO) 
+dictionary = cogs._utils.read_json("blacklist")
+bot.blacklisted_users = dictionary['blacklistedUsers']
 
 for cog in os.listdir("cogs"):
-    if cog.endswith(".py"):
-        if cog != "__init__.py":
-            try:
-                cog = f"cogs.{cog.replace('.py', '')}"
-                bot.load_extension(cog)
-                print(f"{cog} loaded.")
-            except Exception as e:
-                print(f"{cog} couldn't be loaded.")
-                raise e        
+    if cog.endswith(".py") and not cog.startswith("_"):
+        try:
+            cog = f"cogs.{cog.replace('.py', '')}"
+            bot.load_extension(cog)
+            print(f"{cog} loaded.")
+        except Exception as e:
+            print(f"{cog} couldn't be loaded.")
+            raise e        
 
 @bot.command()
 @commands.is_owner()
@@ -26,9 +27,8 @@ async def reload(ctx, cog=None):
     """
     cogs = []
     for cogg in os.listdir("cogs"):
-        if cogg.endswith(".py"):
-            if cogg != "__init__.py":
-                cogs.append(cogg)
+        if cogg.endswith(".py") and not cogg.startswith("_"):
+            cogs.append(cogg)
     if cog is None: await ctx.send(f"Please specify which cog to reload. Available cogs: {', '.join(cogs)}.")
     else:
         try:
@@ -40,12 +40,6 @@ async def reload(ctx, cog=None):
             await ctx.send(f"I couldn't reload {cog}.")
             print(f"{cog} couldn't be reloaded.")
             raise e
-
-@bot.command(aliases=['disconnect', 'close', 'stopbot'])
-@commands.is_owner()
-async def logout(ctx):
-    await ctx.send("Noxility logging out.")
-    await bot.logout()
 
 """
 # logging system

@@ -1,8 +1,9 @@
 from discord.ext import commands
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess
 from contextlib import redirect_stdout
+import cogs._utils
 
-class Eval (commands.Cog):
+class OwnerOnly (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_result = None
@@ -63,5 +64,43 @@ class Eval (commands.Cog):
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
+    @commands.command(aliases=['disconnect', 'close', 'stopbot'])
+    @commands.is_owner()
+    async def logout(self, ctx):
+        await ctx.send(f"Noxility logging out.")
+        await self.bot.logout()
+
+    @commands.command()
+    async def echo(self, ctx, *, message=None):
+        message = message or "What do you want me to repeat?"
+        await ctx.message.delete()
+        await ctx.send(message)
+
+    @commands.group(invoke_without_command=False)
+    @commands.is_owner()
+    async def blacklist(self, ctx):
+        pass
+
+    @blacklist.command()
+    async def add(self, ctx, user: discord.Member=None):
+        user = ctx.author if not user else user
+        if user.id == ctx.author.id: return await ctx.send("Error: You can't blacklist yourself.")
+        print(type(self.bot.blacklisted_users))
+        self.bot.blacklisted_users.append(user.id)
+        data = cogs._utils.read_json("blacklist")
+        data["blacklistedUsers"].append(user.id)
+        cogs._utils.write_json(data, "blacklist")
+        await ctx.send(f"Blacklisted {user.name}.")
+
+    @blacklist.command()
+    async def remove(self, ctx, user: discord.Member=None):
+        user = ctx.author if not user else user
+        if user.id == ctx.author.id: return await ctx.send("Error: You can't whitelist yourself.")
+        self.bot.blacklisted_users.remove(user.id)
+        data = cogs._utils.read_json("blacklist")
+        data["blacklistedUsers"].remove(user.id)
+        cogs._utils.write_json(data, "blacklist")
+        await ctx.send(f"Unblacklisted {user.name}.")
+
 def setup(bot):
-    bot.add_cog(Eval(bot))
+    bot.add_cog(OwnerOnly(bot))
