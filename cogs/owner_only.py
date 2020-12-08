@@ -1,7 +1,6 @@
 from discord.ext import commands
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess
 from contextlib import redirect_stdout
-import cogs._utils
 
 class OwnerOnly (commands.Cog):
     def __init__(self, bot):
@@ -71,36 +70,91 @@ class OwnerOnly (commands.Cog):
         await self.bot.logout()
 
     @commands.command()
+    @commands.is_owner()
     async def echo(self, ctx, *, message=None):
         message = message or "What do you want me to repeat?"
         await ctx.message.delete()
         await ctx.send(message)
 
-    @commands.group(invoke_without_command=False)
+    @commands.command()
     @commands.is_owner()
-    async def blacklist(self, ctx):
-        pass
+    async def reload(self, ctx, cog=None):
+        if not cog:
+            # No cog, means we reload all cogs
+            async with ctx.typing():
+                embed = discord.Embed(title="Reloading...", color=0xf2c203, timestamp=ctx.message.created_at)
+                for ext in os.listdir("./cogs/"):
+                    if ext.endswith(".py") and not ext.startswith("_"):
+                        try:
+                            self.bot.unload_extension(f"cogs.{ext[:-3]}")
+                            self.bot.load_extension(f"cogs.{ext[:-3]}")
+                            embed.add_field(name=f"Reloaded: `{ext[:-3]}`", value='\uFEFF', inline=False)
+                        except Exception as e:
+                            embed.add_field(name=f"Failed to reload: `{ext[:-3]}`", value=e, inline=False)
+                        await asyncio.sleep(0.5)
+                await ctx.send(embed=embed)
+        else:
+            # reload the specific cog
+            embed = discord.Embed(title="Reloading...", color=0xf2c203, timestamp=ctx.message.created_at)
+            ext = f"{cog.lower()}.py"
+            if not os.path.exists(f"./cogs/{ext}"):
+                # if the file does not exist
+                embed.add_field(name=f"Failed to reload: `{ext[:-3]}`", value="This cog does not exist.", inline=False)
 
-    @blacklist.command()
-    async def add(self, ctx, user: discord.Member=None):
-        user = ctx.author if not user else user
-        if user.id == ctx.author.id: return await ctx.send("Error: You can't blacklist yourself.")
-        print(type(self.bot.blacklisted_users))
-        self.bot.blacklisted_users.append(user.id)
-        data = cogs._utils.read_json("blacklist")
-        data["blacklistedUsers"].append(user.id)
-        cogs._utils.write_json(data, "blacklist")
-        await ctx.send(f"Blacklisted {user.name}.")
+            elif ext.endswith(".py") and not ext.startswith("_"):
+                try:
+                    self.bot.unload_extension(f"cogs.{ext[:-3]}")
+                    self.bot.load_extension(f"cogs.{ext[:-3]}")
+                    embed.add_field(name=f"Reloaded: `{ext[:-3]}`", value='\uFEFF', inline=False)
+                except Exception:
+                    desired_trace = traceback.format_exc()
+                    embed.add_field(name=f"Failed to reload: `{ext[:-3]}`", value=desired_trace, inline=False)
+            await ctx.send(embed=embed)
 
-    @blacklist.command()
-    async def remove(self, ctx, user: discord.Member=None):
-        user = ctx.author if not user else user
-        if user.id == ctx.author.id: return await ctx.send("Error: You can't whitelist yourself.")
-        self.bot.blacklisted_users.remove(user.id)
-        data = cogs._utils.read_json("blacklist")
-        data["blacklistedUsers"].remove(user.id)
-        cogs._utils.write_json(data, "blacklist")
-        await ctx.send(f"Unblacklisted {user.name}.")
+    @commands.command()
+    @commands.is_owner()
+    async def unload(self, ctx, cog=None):
+        cogs = []
+        for cogg in os.listdir("./cogs/"):
+            if cogg.endswith(".py") and not cogg.startswith("_"):
+                cogs.append(cogg)
+        if cog is None: await ctx.send(f"Please specify which cog to unload. Available cogs: {', '.join(cogs)}.")
+        embed = discord.Embed(title="Unloading...", color=0xf2c203, timestamp=ctx.message.created_at)
+        ext = f"{cog.lower()}.py"
+        if not os.path.exists(f"./cogs/{ext}"):
+            # if the file does not exist
+            embed.add_field(name=f"Failed to unload: `{ext[:-3]}`", value="This cog does not exist.", inline=False)
+
+        elif ext.endswith(".py") and not ext.startswith("_"):
+            try:
+                self.bot.unload_extension(f"cogs.{ext[:-3]}")
+                embed.add_field(name=f"Unloaded: `{ext[:-3]}`", value='\uFEFF', inline=False)
+            except Exception:
+                desired_trace = traceback.format_exc()
+                embed.add_field(name=f"Failed to unload: `{ext[:-3]}`", value=desired_trace, inline=False)
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.is_owner()
+    async def load(self, ctx, cog=None):
+        cogs = []
+        for cogg in os.listdir("./cogs/"):
+            if cogg.endswith(".py") and not cogg.startswith("_"):
+                cogs.append(cogg)
+        if cog is None: await ctx.send(f"Please specify which cog to load. Available cogs: {', '.join(cogs)}.")
+        embed = discord.Embed(title="Loading...", color=0xf2c203, timestamp=ctx.message.created_at)
+        ext = f"{cog.lower()}.py"
+        if not os.path.exists(f"./cogs/{ext}"):
+            # if the file does not exist
+            embed.add_field(name=f"Failed to load: `{ext[:-3]}`", value="This cog does not exist.", inline=False)
+
+        elif ext.endswith(".py") and not ext.startswith("_"):
+            try:
+                self.bot.load_extension(f"cogs.{ext[:-3]}")
+                embed.add_field(name=f"Loaded: `{ext[:-3]}`", value='\uFEFF', inline=False)
+            except Exception:
+                desired_trace = traceback.format_exc()
+                embed.add_field(name=f"Failed to load: `{ext[:-3]}`", value=desired_trace, inline=False)
 
 def setup(bot):
     bot.add_cog(OwnerOnly(bot))
