@@ -5,8 +5,6 @@ import cogs._utils
 bot = commands.Bot(command_prefix=['nox ', 'Nox ', 'NOX '], owner_id=199375184057073664, intents=discord.Intents.all())
 bot.remove_command("help")
 logging.basicConfig(level=logging.INFO) 
-dictionary = cogs._utils.read_json("blacklist")
-bot.blacklisted_users = dictionary['blacklistedUsers']
 
 for cog in os.listdir("cogs"):
     if cog.endswith(".py") and not cog.startswith("_"):
@@ -41,8 +39,44 @@ async def reload(ctx, cog=None):
             print(f"{cog} couldn't be reloaded.")
             raise e
 
+@bot.command()
+@commands.is_owner()
+async def unload(ctx, cog=None):
+    cogs = []
+    for cogg in os.listdir("cogs"):
+        if cogg.endswith(".py") and not cogg.startswith("_"):
+            cogs.append(cogg)
+    if cog is None: await ctx.send(f"Please specify which cog to unload. Available cogs: {', '.join(cogs)}.")
+    else:
+        try:
+            bot.unload_extension(f"cogs.{cog}")
+            await ctx.send(f"Successfully unloaded {cog}.")
+            print(f"Unloaded {cog}.")
+        except Exception as e:
+            await ctx.send(f"I couldn't unload {cog}.")
+            print(f"{cog} couldn't be unloaded.")
+            raise e
+
+@bot.command()
+@commands.is_owner()
+async def load(ctx, cog=None):
+    cogs = []
+    for cogg in os.listdir("cogs"):
+        if cogg.endswith(".py") and not cogg.startswith("_"):
+            cogs.append(cogg)
+    if cog is None: await ctx.send(f"Please specify which cog to load. Available cogs: {', '.join(cogs)}.")
+    else:
+        try:
+            bot.load_extension(f"cogs.{cog}")
+            await ctx.send(f"Successfully loaded {cog}.")
+            print(f"Loaded {cog}.")
+        except Exception as e:
+            await ctx.send(f"I couldn't load {cog}.")
+            print(f"{cog} couldn't be loaded.")
+            raise e
+
 """
-# logging system
+# advanced logging system
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')

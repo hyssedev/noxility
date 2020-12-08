@@ -12,7 +12,6 @@ class Events (commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(type(self.bot.blacklisted_users))
         print(f"-----Logged in as {self.bot.user.name}.-----")
         await self.bot.change_presence(activity=discord.Game(name=f"nox help | {str(len(self.bot.guilds))} servers"))
 
@@ -40,10 +39,6 @@ class Events (commands.Cog):
     async def on_message(self, message):
         # Ignoring messages sent by the bot itself
         if message.author.id == self.bot.user.id:
-            return
-
-        # A way to blacklist users from the bot by not processing commands if the author is in the blacklisted_users list
-        if message.author.id in self.bot.blacklisted_users:
             return
 
 def setup(bot):

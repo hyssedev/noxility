@@ -98,6 +98,7 @@ class About (commands.Cog):
         self.bot.uptime = datetime.datetime.utcnow()
 
     @commands.command()
+    @commands.cooldown(1, 20, commands.BucketType.user)
     async def about(self, ctx):
         before = time.monotonic()
         await ctx.trigger_typing()
@@ -110,6 +111,7 @@ class About (commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.cooldown(1, 20, commands.BucketType.user)
     async def system(self, ctx):
         embed = discord.Embed(title="Noxility System Information", colour=0xf2c203)
         embed.set_footer(text="Noxility", icon_url=self.bot.user.avatar_url)
@@ -120,6 +122,7 @@ class About (commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.cooldown(1, 20, commands.BucketType.user)
     async def guildbanner(self, ctx):
         if not ctx.guild.icon: return await ctx.send("This server does not have a banner.")
         embed = discord.Embed(title=f"{ctx.guild.name}'s banner", color=0xf2c203, timestamp=ctx.message.created_at)
