@@ -19,10 +19,11 @@ class Events (commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         # Ignoring CommandNotFound and UserInputError
-        ignored = (commands.CommandNotFound, commands.UserInputError)
+        ignored = (commands.CommandNotFound, commands.UserInputError, commands.NotOwner)
         if isinstance(error, ignored):
             return
 
+        error = getattr(error, 'original', error)
         if isinstance(error, commands.CommandOnCooldown):
             m, s = divmod(error.retry_after, 60)
             h, m = divmod(m, 60)
@@ -32,9 +33,39 @@ class Events (commands.Cog):
                 await ctx.send(f' You need to wait {int(m)} minutes and {int(s)} seconds to use this command!')
             else:
                 await ctx.send(f' You need to wait {int(h)} hours, {int(m)} minutes and {int(s)} seconds to use this command!')
+        elif isinstance(error, commands.DisabledCommand):
+            await ctx.send(f'{ctx.command} has been disabled temporarily.')
+        elif isinstance(error, commands.NoPrivateMessage):
+            try:
+                await ctx.author.send(f'{ctx.command} can not be used in Private Messages.')
+            except discord.HTTPException:
+                pass
+
+        # For this error example we check to see where it came from...
+        elif isinstance(error, commands.BadArgument):
+            if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
+                await ctx.send('I could not find that member. Please try again.')
+        else:
+            # All other Errors not returned come here. And we can just print the default TraceBack.
+            await ctx.send("Unknown error occured.")
+            print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+        """ 
         elif isinstance(error, commands.CheckFailure):
             await ctx.send("Insufficient permissions.")
-        raise error
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.send("Error, missing permissions.")
+        elif isinstance(error, commands.BotMissingPermissions):
+            await ctx.send("Error, I do not have required permissions to do this.")
+        elif isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("Seems like you're missing a required argument.")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("Seems like you're giving me a bad argument.")
+        elif isinstance(error, commands.TooManyArguments):
+            await ctx.send("Error, you're giving me too many arguments.")
+        elif isinstance(error, commands.MaxConcurrencyReached):
+            await ctx.send("Error, you've reached max capacity of command usage at once, please finish the previous one.")
+        """
 
     @commands.Cog.listener()
     async def on_message(self, message):
