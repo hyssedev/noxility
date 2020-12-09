@@ -1,4 +1,4 @@
-from discord.ext import commands
+from discord.ext import commands, tasks
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess
 from contextlib import redirect_stdout
 
@@ -6,6 +6,10 @@ class OwnerOnly (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_result = None
+        self.activity.start()
+
+    def cog_unload(self):
+        self.activity.cancel()
     
     def cleanup_code(self, content):
         """Automatically removes code blocks from the code."""
@@ -155,6 +159,23 @@ class OwnerOnly (commands.Cog):
             except Exception:
                 desired_trace = traceback.format_exc()
                 embed.add_field(name=f"Failed to load: `{ext[:-3]}`", value=desired_trace, inline=False)
+
+
+    # ----- updating activity every hour ------
+    @tasks.loop(minutes=60)
+    async def activity(self):
+        await self.bot.change_presence(activity=discord.Game(name=f"nox help | {str(len(self.bot.guilds))} servers"))
+
+    @activity.after_loop
+    async def post_activity(self):
+        if self.activity.failed():
+            import traceback
+            error = self.activity.get_task().exception()
+            traceback.print_exception(type(error), error, error.__traceback__)
+
+    @activity.before_loop
+    async def before_activity(self):
+        await self.bot.wait_until_ready()
 
 def setup(bot):
     bot.add_cog(OwnerOnly(bot))

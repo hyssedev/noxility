@@ -13,7 +13,8 @@ class Events (commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-----Logged in as {self.bot.user.name}.-----")
-        await self.bot.change_presence(activity=discord.Game(name=f"nox help | {str(len(self.bot.guilds))} servers"))
+        # moved to a task to do this every hour
+        # await self.bot.change_presence(activity=discord.Game(name=f"nox help | {str(len(self.bot.guilds))} servers"))
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
