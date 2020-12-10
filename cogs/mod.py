@@ -13,12 +13,15 @@ class Mod (commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    @commands.bot_has_permissions(kick_members=True)
     @commands.has_guild_permissions(kick_members=True)
-    async def kick(self, ctx, member: cogs._utils.MemberID, *, reason=None):
+    async def kick(self, ctx, member: discord.Member=None, *, reason=None):
+        if member is None: return await ctx.send("Error, invalid member.")
         if await cogs._utils.role_hierarchy(ctx, member): return
-        await ctx.guild.kick(discord.Object(id=member.id))
-        embed = discord.Embed(title=f"{member.name} got kicked by Similarty", description=reason, color=0xf2c203)
-        await ctx.send(embed=embed)
+        if ctx.guild.me.top_role <= member.top_role:
+            return await ctx.send(f"Error, you can't do this because my role is lower than **{member.name}**.")
+        await ctx.guild.kick(discord.Object(id=member.id), reason=reason)
+        await ctx.send(f"✅ Successfully **{str(ctx.command.name)}ed** {member.name}.")
     
 
 def setup(bot):

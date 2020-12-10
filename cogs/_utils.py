@@ -40,14 +40,14 @@ async def role_hierarchy(ctx, member):
     """ Custom way to check permissions when handling moderation commands """
     try:
         # Self checks
-        if member == ctx.author: return await ctx.send(f"You can't do this to yourself")
-        if member.id == ctx.bot.user.id: return await ctx.send("I can't do this to myself")
+        if member == ctx.author: return await ctx.send(f"Error, you can't do this to yourself.")
+        if member.id == ctx.bot.user.id: return await ctx.send("Error, I can't do this to myself.")
         # Check if user bypasses
         if ctx.author.id == ctx.guild.owner.id: return False
+        if member.id == bot.owner_id: return await ctx.send("Error, I cannot do this to my developer.")
         # Now permission check
-        # todo: check if he is trying the command on bot owner
         if member.id == ctx.guild.owner.id or ctx.author.top_role == member.top_role or ctx.author.top_role < member.top_role:
-            return await ctx.send(f"You can't do this because of role hierarchy.")
+            return await ctx.send(f"Error, you can't do this because of role hierarchy.")
     except Exception:
         pass
 
