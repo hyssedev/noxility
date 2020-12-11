@@ -23,7 +23,7 @@ class OwnerOnly (commands.Cog):
     @commands.command(name='eval')
     @commands.is_owner()
     async def _eval(self, ctx, *, body: str):
-        """Evaluates a code"""
+        """Evaluates code"""
         env = {
             'bot': self.bot,
             'ctx': ctx,
@@ -70,12 +70,14 @@ class OwnerOnly (commands.Cog):
     @commands.command(aliases=['disconnect', 'close', 'stopbot'])
     @commands.is_owner()
     async def logout(self, ctx):
+        """Logs the bot out."""
         await ctx.send(f"Noxility logging out.")
         await self.bot.logout()
 
     @commands.command()
     @commands.is_owner()
     async def echo(self, ctx, *, message=None):
+        """Repeats your message."""
         message = message or "What do you want me to repeat?"
         await ctx.message.delete()
         await ctx.send(message)
@@ -83,6 +85,7 @@ class OwnerOnly (commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def reload(self, ctx, cog=None):
+        """Realods specified cog."""
         if not cog:
             # No cog, means we reload all cogs
             async with ctx.typing():
@@ -118,6 +121,7 @@ class OwnerOnly (commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def unload(self, ctx, cog=None):
+        """Unloads specified cog."""
         cogs = []
         for cogg in os.listdir("./cogs/"):
             if cogg.endswith(".py") and not cogg.startswith("_"):
@@ -141,6 +145,7 @@ class OwnerOnly (commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def load(self, ctx, cog=None):
+        """Loads specified cog."""
         cogs = []
         for cogg in os.listdir("./cogs/"):
             if cogg.endswith(".py") and not cogg.startswith("_"):

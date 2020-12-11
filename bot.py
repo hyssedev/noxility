@@ -2,8 +2,7 @@ from discord.ext import commands
 import discord, os, asyncio, logging
 import cogs._utils
 
-bot = commands.Bot(command_prefix=['nox ', 'Nox ', 'NOX '], owner_id=199375184057073664, intents=discord.Intents.all())
-bot.remove_command("help")
+bot = commands.Bot(command_prefix=['nox ', 'Nox ', 'NOX '], owner_id=199375184057073664, intents=discord.Intents.all(), help_command=cogs._utils.EmbedHelpCommand(), description="Noxility is a powerful bot with all kinds of commands, ready to make your server more fun & enjoyable.")
 logging.basicConfig(level=logging.INFO) 
 
 for cog in os.listdir("cogs"):
