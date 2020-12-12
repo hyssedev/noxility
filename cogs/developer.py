@@ -2,7 +2,7 @@ from discord.ext import commands, tasks
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess
 from contextlib import redirect_stdout
 
-class OwnerOnly (commands.Cog):
+class Developer (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_result = None
@@ -67,7 +67,7 @@ class OwnerOnly (commands.Cog):
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
-    @commands.command(aliases=['disconnect', 'close', 'stopbot'])
+    @commands.command()
     @commands.is_owner()
     async def logout(self, ctx):
         """Logs the bot out."""
@@ -76,7 +76,7 @@ class OwnerOnly (commands.Cog):
 
     @commands.command()
     @commands.is_owner()
-    async def echo(self, ctx, *, message=None):
+    async def echo(self, ctx, *, message):
         """Repeats your message."""
         message = message or "What do you want me to repeat?"
         await ctx.message.delete()
@@ -103,7 +103,7 @@ class OwnerOnly (commands.Cog):
         else:
             # reload the specific cog
             embed = discord.Embed(title="Reloading...", color=0xf2c203, timestamp=ctx.message.created_at)
-            ext = f"{cog.lower()}.py"
+            ext = f"{cog}.py"
             if not os.path.exists(f"./cogs/{ext}"):
                 # if the file does not exist
                 embed.add_field(name=f"Failed to reload: `{ext[:-3]}`", value="This cog does not exist.", inline=False)
@@ -128,7 +128,7 @@ class OwnerOnly (commands.Cog):
                 cogs.append(cogg)
         if cog is None: await ctx.send(f"Please specify which cog to unload. Available cogs: {', '.join(cogs)}.")
         embed = discord.Embed(title="Unloading...", color=0xf2c203, timestamp=ctx.message.created_at)
-        ext = f"{cog.lower()}.py"
+        ext = f"{cog}.py"
         if not os.path.exists(f"./cogs/{ext}"):
             # if the file does not exist
             embed.add_field(name=f"Failed to unload: `{ext[:-3]}`", value="This cog does not exist.", inline=False)
@@ -152,7 +152,7 @@ class OwnerOnly (commands.Cog):
                 cogs.append(cogg)
         if cog is None: await ctx.send(f"Please specify which cog to load. Available cogs: {', '.join(cogs)}.")
         embed = discord.Embed(title="Loading...", color=0xf2c203, timestamp=ctx.message.created_at)
-        ext = f"{cog.lower()}.py"
+        ext = f"{cog}.py"
         if not os.path.exists(f"./cogs/{ext}"):
             # if the file does not exist
             embed.add_field(name=f"Failed to load: `{ext[:-3]}`", value="This cog does not exist.", inline=False)
@@ -183,4 +183,4 @@ class OwnerOnly (commands.Cog):
         await self.bot.wait_until_ready()
 
 def setup(bot):
-    bot.add_cog(OwnerOnly(bot))
+    bot.add_cog(Developer(bot))

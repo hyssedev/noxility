@@ -19,7 +19,7 @@ class Events (commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         # Ignoring CommandNotFound and UserInputError
-        ignored = (commands.CommandNotFound, commands.UserInputError, commands.NotOwner)
+        ignored = (commands.CommandNotFound, commands.NotOwner)
         if isinstance(error, ignored):
             return
 
@@ -34,7 +34,7 @@ class Events (commands.Cog):
             else:
                 await ctx.send(f' You need to wait {int(h)} hours, {int(m)} minutes and {int(s)} seconds to use this command!')
         elif isinstance(error, commands.MissingRequiredArgument):
-            pass
+            await ctx.send(f"`{error.param.name}` is a required argument that is missing.")
             # TODO
             # await ctx.send_help()
         elif isinstance(error, commands.DisabledCommand):
@@ -48,7 +48,7 @@ class Events (commands.Cog):
         elif isinstance(error, commands.MissingPermissions):
             await ctx.send("Error, you have insufficient permissions.")
         elif isinstance(error, commands.BotMissingPermissions):
-            await ctx.send("Error, I do not have required permissions to do this.")   
+            await ctx.send("Error, I do not have required permissions to do this.")
         else:
             # All other Errors not returned come here. And we can just print the default TraceBack.
             await ctx.send("Unknown error occured.")

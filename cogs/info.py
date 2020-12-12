@@ -8,7 +8,7 @@ from cogs._utils import human_timedelta
 
 emote = "<:noxilityarrow:786985788893560923>"
 
-class About (commands.Cog):
+class Info (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bot.uptime = datetime.datetime.utcnow()
@@ -50,4 +50,4 @@ class About (commands.Cog):
         await ctx.send(embed=embed)
 
 def setup(bot):
-    bot.add_cog(About(bot))
+    bot.add_cog(Info(bot))

@@ -98,22 +98,12 @@ class EmbedHelpCommand(commands.HelpCommand):
 
         signature = f"{self.clean_prefix}{full_invoke}{cmd_invoke} {command.signature}"
         return signature
-        # return '{0.qualified_name} {0.signature}'.format(command)
-    """
-    def get_command_signature(self, command: commands.Command, ctx: commands.Context):
-        aliases = "|".join(command.aliases)
-        cmd_invoke = f"[{command.name}|{aliases}]" if command.aliases else command.name
 
-        full_invoke = command.qualified_name.replace(command.name, "")
-
-        signature = f"{ctx.prefix}{full_invoke}{cmd_invoke} {command.signature}"
-        return signature
-    """
     async def send_bot_help(self, mapping):
         embed = discord.Embed(title='Bot Commands', colour=self.COLOUR)
         description = self.context.bot.description
         if description:
-            embed.description = description
+            embed.description = f"{description} ```[] = optional argument\n<> = required argument\nDo not write these when using commands.\nType nox help [command | module] for more help on a command or module.```\n"
 
         for cog, commands in mapping.items():
             name = 'No Category' if cog is None else cog.qualified_name
