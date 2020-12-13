@@ -33,10 +33,12 @@ class Events (commands.Cog):
                 await ctx.send(f' You need to wait {int(m)} minutes and {int(s)} seconds to use this command!')
             else:
                 await ctx.send(f' You need to wait {int(h)} hours, {int(m)} minutes and {int(s)} seconds to use this command!')
+        elif isinstance(error, commands.MaxConcurrencyReached):
+            await ctx.send("Error, you've reached max capacity of command usage at once, please finish the previous one.")
         elif isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f"`{error.param.name}` is a required argument that is missing.")
-            # TODO
-            # await ctx.send_help()
+            await ctx.send(f"Error, `{error.param.name}` is a required argument that is missing.")
+        elif isinstance(error, commands.RoleNotFound):
+            await ctx.send(f"Error, I couldn't find specified role.")
         elif isinstance(error, commands.DisabledCommand):
             await ctx.send(f'{ctx.command} has been disabled temporarily.')
         elif isinstance(error, commands.NoPrivateMessage):
@@ -69,15 +71,11 @@ class Events (commands.Cog):
             await ctx.send("Error, missing permissions.")
         elif isinstance(error, commands.BotMissingPermissions):
             await ctx.send("Error, I do not have required permissions to do this.")
-
-        elif isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Seems like you're missing a required argument.")
+            
         elif isinstance(error, commands.BadArgument):
             await ctx.send("Seems like you're giving me a bad argument.")
         elif isinstance(error, commands.TooManyArguments):
             await ctx.send("Error, you're giving me too many arguments.")
-        elif isinstance(error, commands.MaxConcurrencyReached):
-            await ctx.send("Error, you've reached max capacity of command usage at once, please finish the previous one.")
 
         """
 
