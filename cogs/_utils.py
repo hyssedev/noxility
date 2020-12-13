@@ -103,10 +103,10 @@ class EmbedHelpCommand(commands.HelpCommand):
         embed = discord.Embed(title='Bot Commands', colour=self.COLOUR)
         description = self.context.bot.description
         if description:
-            embed.description = f"{description}\n```[] = optional argument\n<> = required argument\nDo not write these when using commands.\nType nox help [command | module] for more help on a command or module.```\n"
+            embed.description = f"{description}\n```[] = optional argument\n<> = required argument\nDo not write these when using commands.\nIf there is any space in a cog name, please type '_' instead of it.\nType nox help [command | module] for more help on a command or module.```\n"
 
         for cog, commands in mapping.items():
-            name = 'No Category' if cog is None else cog.qualified_name
+            name = 'No Category' if cog is None else str(cog.qualified_name).replace("_", " ")
             if name != 'No Category':
                 filtered = await self.filter_commands(commands, sort=True)
                 if filtered:
@@ -121,7 +121,7 @@ class EmbedHelpCommand(commands.HelpCommand):
         await self.get_destination().send(embed=embed)
 
     async def send_cog_help(self, cog):
-        embed = discord.Embed(title='{0.qualified_name} Commands'.format(cog), colour=self.COLOUR)
+        embed = discord.Embed(title=f'{cog.qualified_name.replace("_", " ")} Commands', colour=self.COLOUR)
         if cog.description:
             embed.description = cog.description
 

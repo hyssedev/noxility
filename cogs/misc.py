@@ -16,6 +16,7 @@ class Misc (commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
     async def rolemembers(self, ctx, role: discord.Role):
+        """Shows how many members have the specified role."""
         start = time.time()
         pages = []
         count = 1
@@ -30,6 +31,8 @@ class Misc (commands.Cog):
         end = time.time()
         print(f"Calculations took {end - start} seconds.")
         await cogs._utils.Pag(color=0xf2c203, entries=pages2, length=1, timeout=30).start(ctx)
+
+
 
 def setup(bot):
     bot.add_cog(Misc(bot))
