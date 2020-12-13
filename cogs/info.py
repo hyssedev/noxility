@@ -5,6 +5,7 @@ from psutil._common import bytes2human
 import parsedatetime as pdt
 from dateutil.relativedelta import relativedelta
 from cogs._utils import human_timedelta
+import cogs._utils
 
 emote = "<:noxilityarrow:786985788893560923>"
 
@@ -114,6 +115,11 @@ class Info (commands.Cog):
         embed = discord.Embed(colour=role.colour)
         embed.add_field(name=f"**User**", value=f"{emote} **Mention:** {role.mention}\n{emote} **ID:** {role.id}\n{emote} **Owned by:** {owned_by} member{'s' if owned_by > 1 else ''}\n{emote} **Created:** {created}\n{emote} **Position:** {role.position}\n{emote} **Hoisted:** {'<:noxcheck:787008166327615509>' if role.hoist else '<:noxcross1:787008036882350100>'}\n{emote} **Mentionable:** {'<:noxcheck:787008166327615509>' if role.mentionable else '<:noxcross1:787008036882350100>'}\n{emote} **Managed:** {'<:noxcheck:787008166327615509>' if role.managed else '<:noxcross1:787008036882350100>'}", inline=False)
         await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def support(self, ctx):
+        await ctx.send(f"**Noxility Server**\n{emote} Discord Server - https://discord.com/invite/hHnejD2Xd6")
 
 def setup(bot):
     bot.add_cog(Info(bot))
