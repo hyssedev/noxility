@@ -78,7 +78,7 @@ class Info (commands.Cog):
             if len(roles) >= 950:
                 embed.set_footer(text=f"...and other {len(ctx.guild.roles) - index} roles (too many to show).")
                 break
-            roles += str(role) + str(role) +" "
+            roles += str(role) +" "
         embed.add_field(name="Guild Role List", value=f"**`[{len(ctx.guild.roles)}]` roles:** {roles}\n")
         await ctx.send(embed=embed)
 
