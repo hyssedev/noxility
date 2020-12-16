@@ -70,10 +70,16 @@ class Info (commands.Cog):
 
     @role.command(name="list")
     async def _list(self, ctx):
-        """Retrieves a list about current guiilds roles"""
+        """Retrieves a list about current guilds roles"""
         roles = ", ".join([str(x) for x in ctx.guild.roles])
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Guild Role List", value=f"**`[{len(ctx.guild.roles)}]` roles:**\nToo many to list them all!") if len(roles) > 1000 else embed.add_field(name="Guild Role List", value=f"**`[{len(ctx.guild.roles)}]` roles:**\n{roles}") 
+        roles = ""
+        for index, role in enumerate(ctx.guild.roles):
+            if len(roles) >= 950:
+                embed.set_footer(text=f"...and other {len(ctx.guild.roles) - index} roles (too many to show).")
+                break
+            roles += str(role) + str(role) +" "
+        embed.add_field(name="Guild Role List", value=f"**`[{len(ctx.guild.roles)}]` roles:** {roles}\n")
         await ctx.send(embed=embed)
 
     @role.command(name="add")
@@ -101,6 +107,34 @@ class Info (commands.Cog):
             pages.append(members)
         pages2 = [s + f"\n`{len(pages)} page{'s' if len(pages) > 1 else ''}, {count-1} {'entries' if count-1 > 1 else 'entry'}`" for s in pages]
         await cogs._utils.Pag(color=0xf2c203, entries=pages2, length=1, timeout=30).start(ctx)
+
+    @commands.group(invoke_without_command=False)
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def emoji(self, ctx):
+        """Command group for many different emoji related commands."""
+        if ctx.invoked_subcommand == None: await ctx.send("Error, this command requires at least 1 argument.")
+
+    @emoji.command()
+    async def list(self, ctx):
+        """Retrieves a list about current guilds emojis"""
+        embed = discord.Embed(colour=0xf2c203, title=f"{ctx.guild.name}'s Custom Emojis List")
+        emojis = ""
+        if len(ctx.guild.emojis)==0: return await ctx.send("Error, this guild doesn't have any emoji.")
+        for index, emoji in enumerate(ctx.guild.emojis):
+            if len(emojis) >= 1000:
+                embed.set_footer(text=f"...and other {len(ctx.guild.emojis) - index} custom emojis (too many to show).")
+                break
+            emojis += str(emoji) + " "
+        embed.add_field(name="Emojis", value=f"{emojis}")
+        await ctx.send(embed=embed)
+
+    @emoji.command()
+    async def info(self, ctx):
+        pass
+
+    @emoji.command()
+    async def enlarge(sellf, ctx):
+        pass
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
