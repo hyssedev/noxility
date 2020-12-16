@@ -44,7 +44,13 @@ class Bot_Info (commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def support(self, ctx):
         """Shows Noxility's Server invite link"""
-        await ctx.send(f"**Noxility Server**\n{emote} Discord Server - https://discord.com/invite/hHnejD2Xd6")
+        await ctx.send(f"{emote} **Noxility Server** - https://discord.com/invite/hHnejD2Xd6")
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def invite(self, ctx):
+        """Shows Noxility's invite link"""
+        await ctx.send(f"{emote} **Noxility Invite Link** - SOON")
 
     @commands.command()
     @commands.cooldown(1, 60*60*6, commands.BucketType.user)
