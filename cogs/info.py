@@ -78,7 +78,7 @@ class Info (commands.Cog):
             if len(roles) >= 950:
                 embed.set_footer(text=f"...and other {len(ctx.guild.roles) - index} roles (too many to show).")
                 break
-            roles += str(role) +" "
+            roles += str(role) + " "
         embed.add_field(name="Guild Role List", value=f"**`[{len(ctx.guild.roles)}]` roles:** {roles}\n")
         await ctx.send(embed=embed)
 
@@ -117,7 +117,7 @@ class Info (commands.Cog):
     @emoji.command()
     async def list(self, ctx):
         """Retrieves a list about current guilds emojis"""
-        embed = discord.Embed(colour=0xf2c203, title=f"{ctx.guild.name}'s Custom Emojis List")
+        embed = discord.Embed(colour=0xf2c203)
         emojis = ""
         if len(ctx.guild.emojis)==0: return await ctx.send("Error, this guild doesn't have any emoji.")
         for index, emoji in enumerate(ctx.guild.emojis):
@@ -125,12 +125,16 @@ class Info (commands.Cog):
                 embed.set_footer(text=f"...and other {len(ctx.guild.emojis) - index} custom emojis (too many to show).")
                 break
             emojis += str(emoji) + " "
-        embed.add_field(name="Emojis", value=f"{emojis}")
+        embed.add_field(name=f"{ctx.guild.name} Custom Emojis List", value=f"{emojis}")
         await ctx.send(embed=embed)
 
     @emoji.command()
-    async def info(self, ctx):
-        pass
+    async def info(self, ctx, emoji:discord.Emoji):
+        embed = discord.Embed(colour=0xf2c203)
+        created = (emoji.created_at).strftime("%d %B, %Y")
+        embed.set_thumbnail(url=f"{emoji.url}")
+        embed.add_field(name="Emoji Info", value=f"{emote} **Name:** {emoji.name}\n{emote} **ID:** {emoji.id}\n{emote} **Created:** {created} ({cogs._utils.human_timedelta(emoji.created_at)} ago)\n{emote} **Animated:** {'<:check:787008166327615509>' if emoji.animated else '<:cross1:787008036882350100>'}\n{emote} **URL:** [click here]({emoji.url})")
+        await ctx.send(embed=embed)
 
     @emoji.command()
     async def enlarge(sellf, ctx):
