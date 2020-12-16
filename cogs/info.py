@@ -116,7 +116,7 @@ class Info (commands.Cog):
 
     @emoji.command()
     async def list(self, ctx):
-        """Retrieves a list about current guilds emojis"""
+        """Retrieves a list about current guilds emojis."""
         embed = discord.Embed(colour=0xf2c203)
         emojis = ""
         if len(ctx.guild.emojis)==0: return await ctx.send("Error, this guild doesn't have any emoji.")
@@ -130,6 +130,8 @@ class Info (commands.Cog):
 
     @emoji.command()
     async def info(self, ctx, emoji:discord.Emoji):
+        """Retrieves info about specified emoji."""
+        # TIP: Does not work with emojis that are in servers that the bot is not in
         embed = discord.Embed(colour=0xf2c203)
         created = (emoji.created_at).strftime("%d %B, %Y")
         embed.set_thumbnail(url=f"{emoji.url}")
@@ -137,8 +139,9 @@ class Info (commands.Cog):
         await ctx.send(embed=embed)
 
     @emoji.command()
-    async def enlarge(sellf, ctx):
-        pass
+    async def enlarge(sellf, ctx, emoji:discord.Emoji):
+        # TIP: Does not work with emojis that are in servers that the bot is not in
+        await ctx.send(f"{emoji.url}")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)

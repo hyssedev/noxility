@@ -39,6 +39,8 @@ class Events (commands.Cog):
             await ctx.send(f"Error, `{error.param.name}` is a required argument that is missing.")
         elif isinstance(error, commands.RoleNotFound):
             await ctx.send(f"Error, I couldn't find specified role.")
+        elif isinstance(error, commands.EmojiNotFound):
+            await ctx.send(f"Error, I couldn't find specified emoji.")
         elif isinstance(error, commands.DisabledCommand):
             await ctx.send(f'{ctx.command} has been disabled temporarily.')
         elif isinstance(error, commands.NoPrivateMessage):
