@@ -4,6 +4,8 @@ from discord.ext import commands
 from discord.ext.buttons import Paginator
 from dateutil.relativedelta import relativedelta
 
+emote = "<:noxilityarrow:786985788893560923>"
+
 def get_path():
     """
     A function to get the current path to bot.py

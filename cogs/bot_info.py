@@ -6,8 +6,7 @@ import parsedatetime as pdt
 from dateutil.relativedelta import relativedelta
 from cogs._utils import human_timedelta
 import cogs._utils
-
-emote = "<:noxilityarrow:786985788893560923>"
+from cogs._utils import emote
 
 class Bot_Info (commands.Cog):
     def __init__(self, bot):

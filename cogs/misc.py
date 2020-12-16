@@ -6,7 +6,7 @@ import parsedatetime as pdt
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import cogs._utils
-from cogs.info import emote
+from cogs._utils import emote
 
 class Misc (commands.Cog):
     def __init__(self, bot):
@@ -31,8 +31,6 @@ class Misc (commands.Cog):
         end = time.time()
         print(f"Calculations took {end - start} seconds.")
         await cogs._utils.Pag(color=0xf2c203, entries=pages2, length=1, timeout=30).start(ctx)
-
-
 
 def setup(bot):
     bot.add_cog(Misc(bot))
