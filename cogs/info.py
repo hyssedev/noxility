@@ -29,8 +29,8 @@ class Info (commands.Cog):
         """Command group for many different channel related commands."""
         if ctx.invoked_subcommand == None: await ctx.send("Error, this command requires at least 1 argument.")
 
-    @channel.command()
-    async def info(self, ctx):
+    @channel.command(name="info")
+    async def _info(self, ctx):
         """Retrieves info about current channel."""
         embed = discord.Embed(title=f"Stats for **{ctx.channel.name}**", description=f"Category: {ctx.channel.category.name if ctx.channel.category else 'No category'}", color=0xf2c203)
         embed.add_field(name="Guild", value=ctx.guild.name, inline=False)
@@ -45,8 +45,8 @@ class Info (commands.Cog):
         embed.add_field(name="Hash", value=hash(ctx.channel), inline=False)
         await ctx.send(embed=embed)
 
-    @channel.command()
-    async def list(self, ctx):
+    @channel.command(name="list")
+    async def _list(self, ctx):
         """Retrieves a list about current guilds channels."""
         channels = ", ".join([str(x) for x in ctx.guild.channels])
         embed = discord.Embed(colour=0xf2c203)
@@ -60,7 +60,7 @@ class Info (commands.Cog):
         if ctx.invoked_subcommand == None: await ctx.send("Error, this command requires at least 1 argument.")
         
     @role.command(name="info")
-    async def _info(self, ctx, role:discord.Role):
+    async def info_(self, ctx, role:discord.Role):
         """Retrieves info about specified role."""
         created = (role.created_at).strftime("%d %B, %Y, %H:%M")
         owned_by = len(role.members)
@@ -69,7 +69,7 @@ class Info (commands.Cog):
         await ctx.send(embed=embed)
 
     @role.command(name="list")
-    async def _list(self, ctx):
+    async def list_(self, ctx):
         """Retrieves a list about current guilds roles"""
         roles = ", ".join([str(x) for x in ctx.guild.roles])
         embed = discord.Embed(colour=0xf2c203)
@@ -114,8 +114,8 @@ class Info (commands.Cog):
         """Command group for many different emoji related commands."""
         if ctx.invoked_subcommand == None: await ctx.send("Error, this command requires at least 1 argument.")
 
-    @emoji.command()
-    async def list(self, ctx):
+    @emoji.command(name="list")
+    async def __list(self, ctx):
         """Retrieves a list about current guilds emojis."""
         embed = discord.Embed(colour=0xf2c203)
         emojis = ""
@@ -128,8 +128,8 @@ class Info (commands.Cog):
         embed.add_field(name=f"{ctx.guild.name} Custom Emojis List", value=f"{emojis}")
         await ctx.send(embed=embed)
 
-    @emoji.command()
-    async def info(self, ctx, emoji:discord.Emoji):
+    @emoji.command(name="info")
+    async def __info(self, ctx, emoji:discord.Emoji):
         """Retrieves info about specified emoji."""
         # TIP: Does not work with emojis that are in servers that the bot is not in
         embed = discord.Embed(colour=0xf2c203)
@@ -140,6 +140,7 @@ class Info (commands.Cog):
 
     @emoji.command()
     async def enlarge(sellf, ctx, emoji:discord.Emoji):
+        """Enlarges specified emoji."""
         # TIP: Does not work with emojis that are in servers that the bot is not in
         await ctx.send(f"{emoji.url}")
 
