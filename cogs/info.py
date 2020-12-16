@@ -48,9 +48,15 @@ class Info (commands.Cog):
     @channel.command(name="list")
     async def _list(self, ctx):
         """Retrieves a list about current guilds channels."""
-        channels = ", ".join([str(x) for x in ctx.guild.channels])
+        # channels = ", ".join([str(x) for x in ctx.guild.channels])
+        channels = ""
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Guild Channel List", value=f"**`[{len(ctx.guild.channels)}]` channels of which {len(ctx.guild.text_channels)} text and {len(ctx.guild.voice_channels)} voice**\n{channels}") if len(channels) < 1000 else embed.add_field(name="Guild Channel List", value=f"**`[{len(ctx.guild.channels)}]` channels of which {len(ctx.guild.text_channels)} text and {len(ctx.guild.voice_channels)} voice**\nToo many to list them all!")
+        for index, channel in enumerate(ctx.guild.channels):
+            if len(channels) >= 900:
+                embed.set_footer(text=f"...and other {len(ctx.guild.channels) - index} channel{'s' if len(ctx.guild.channels) - index > 1 else ''} (too many to show).")
+                break
+            channels += str(channel) + " "
+        embed.add_field(name="Guild Channel List", value=f"**`[{len(ctx.guild.channels)}]` channel{'s' if len(ctx.guild.channels) > 1 else ''} of which {len(ctx.guild.text_channels)} text and {len(ctx.guild.voice_channels)} voice**\n{channels}")
         await ctx.send(embed=embed)
 
     @commands.group(invoke_without_command=False)
@@ -71,15 +77,15 @@ class Info (commands.Cog):
     @role.command(name="list")
     async def list_(self, ctx):
         """Retrieves a list about current guilds roles"""
-        roles = ", ".join([str(x) for x in ctx.guild.roles])
-        embed = discord.Embed(colour=0xf2c203)
+        # roles = ", ".join([str(x) for x in ctx.guild.roles])
         roles = ""
+        embed = discord.Embed(colour=0xf2c203)
         for index, role in enumerate(ctx.guild.roles):
             if len(roles) >= 950:
-                embed.set_footer(text=f"...and other {len(ctx.guild.roles) - index} roles (too many to show).")
+                embed.set_footer(text=f"...and other {len(ctx.guild.roles) - index} role{'s' if len(ctx.guild.roles) - index > 1 else ''} (too many to show).")
                 break
             roles += str(role) + " "
-        embed.add_field(name="Guild Role List", value=f"**`[{len(ctx.guild.roles)}]` roles:** {roles}\n")
+        embed.add_field(name="Guild Role List", value=f"**`[{len(ctx.guild.roles)}]` role{'s' if len(ctx.guild.roles) > 1 else ''}:** {roles}\n")
         await ctx.send(embed=embed)
 
     @role.command(name="add")
@@ -122,7 +128,7 @@ class Info (commands.Cog):
         if len(ctx.guild.emojis)==0: return await ctx.send("Error, this guild doesn't have any emoji.")
         for index, emoji in enumerate(ctx.guild.emojis):
             if len(emojis) >= 1000:
-                embed.set_footer(text=f"...and other {len(ctx.guild.emojis) - index} custom emojis (too many to show).")
+                embed.set_footer(text=f"...and other {len(ctx.guild.emojis) - index} custom emoji{'s' if len(ctx.guild.emojis) - index > 1 else ''} (too many to show).")
                 break
             emojis += str(emoji) + " "
         embed.add_field(name=f"{ctx.guild.name} Custom Emojis List", value=f"{emojis}")
