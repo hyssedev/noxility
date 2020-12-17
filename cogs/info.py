@@ -5,9 +5,8 @@ from psutil._common import bytes2human
 import parsedatetime as pdt
 from dateutil.relativedelta import relativedelta
 from cogs._utils import human_timedelta
+from cogs._utils import emote
 import cogs._utils
-
-emote = "<:noxilityarrow:786985788893560923>"
 
 class Info (commands.Cog):
     def __init__(self, bot):
@@ -89,14 +88,24 @@ class Info (commands.Cog):
         await ctx.send(embed=embed)
 
     @role.command(name="add")
+    @commands.bot_has_permissions(manage_roles=True)
+    @commands.has_guild_permissions(manage_roles=True)
     async def _add(self, ctx, member: discord.Member, role: discord.Role):
         """Gives the specified member the specified role."""
-        pass
+        # no need to do try: except: because we already check for required permissions
+        if role in member.roles: return await ctx.send("Error, this member already has that role!")
+        await member.add_roles(role)
+        await ctx.send(f"Gave {member.name} the {role.name} role.")
 
     @role.command(name="remove")
+    @commands.bot_has_permissions(manage_roles=True)
+    @commands.has_guild_permissions(manage_roles=True)
     async def _remove(self, ctx, member: discord.Member, role: discord.Role):
         """Removes the specified member the specified role."""
-        pass
+        if role not in member.roles: return await ctx.send("Error, this member does not have that role!")
+        # no need to do try: except: because we already check for required permissions
+        await member.remove_roles(role)
+        await ctx.send(f"Removed {role.name} from {member.name} role.")
 
     @role.command(name="members")
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)

@@ -37,6 +37,8 @@ class Events (commands.Cog):
             await ctx.send("Error, you've reached max capacity of command usage at once, please finish the previous one.")
         elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Error, `{error.param.name}` is a required argument that is missing.")
+        elif isinstance(error, commands.MemberNotFound):
+            await ctx.send(f"Error, I couldn't find specified member.")
         elif isinstance(error, commands.RoleNotFound):
             await ctx.send(f"Error, I couldn't find specified role.")
         elif isinstance(error, commands.EmojiNotFound):
