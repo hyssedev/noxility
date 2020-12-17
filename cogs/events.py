@@ -27,8 +27,9 @@ class Events (commands.Cog):
         if isinstance(error, commands.CommandOnCooldown):
             m, s = divmod(error.retry_after, 60)
             h, m = divmod(m, 60)
+            seconds = int(s) if s > 1 else round(s, 1)
             if int(h) == 0 and int(m) == 0:
-                await ctx.send(f' You need to wait {int(s)} seconds to use this command!')
+                await ctx.send(f' You need to wait {int(s) if s > 1 else round(s, 1)} second{"s" if int(s) != 1 else ""} to use this command!')
             elif int(h) == 0 and int(m) != 0:
                 await ctx.send(f' You need to wait {int(m)} minutes and {int(s)} seconds to use this command!')
             else:

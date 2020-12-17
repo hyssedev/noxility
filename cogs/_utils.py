@@ -252,3 +252,6 @@ def check_status(member, status):
     if check == discord.Status.offline: return offline
     if check == discord.Status.idle: return idle
     if check == discord.Status.dnd: return dnd
+
+def plural_check(smth):
+  return 's' if smth > 1 else ''
