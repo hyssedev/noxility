@@ -15,22 +15,11 @@ class Misc (commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
-    async def rolemembers(self, ctx, role: discord.Role):
+    async def lines(self, ctx):
         """Shows how many members have the specified role."""
-        start = time.time()
-        pages = []
-        count = 1
-        for i in range(0, len(role.members), 15):
-            members = ""
-            next_members = role.members[i : i + 15]
-            for member in next_members:
-                members += f"`[{count}]` **{member}** (ID: {member.id})\n"
-                count += 1
-            pages.append(members)
-        pages2 = [s + f"\n`{len(pages)} page{'s' if len(pages) > 1 else ''}, {count-1} {'entries' if count-1 > 1 else 'entry'}`" for s in pages]
-        end = time.time()
-        print(f"Calculations took {end - start} seconds.")
-        await cogs._utils.Pag(color=0xf2c203, entries=pages2, length=1, timeout=30).start(ctx)
+        embed = discord.Embed(colour=0xf2c203)
+        embed.add_field(name="This project currently has", value=f"{cogs._utils.countlines(r'/root/noxility/')} lines")
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Misc(bot))

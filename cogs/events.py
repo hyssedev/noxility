@@ -58,7 +58,7 @@ class Events (commands.Cog):
             await ctx.send("Error, I do not have required permissions to do this.")
         else:
             # All other Errors not returned come here. And we can just print the default TraceBack.
-            await ctx.send("Unknown error occured.")
+            await ctx.send("Unknown error occured, if you think this is a mistake please report it in our Support Server. Use `nox support` to see it.")
             print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
         """ 

@@ -1,4 +1,4 @@
-import json, discord, asyncio, datetime
+import json, discord, asyncio, datetime, os
 from pathlib import Path
 from discord.ext import commands
 from discord.ext.buttons import Paginator
@@ -254,4 +254,21 @@ def check_status(member, status):
     if check == discord.Status.dnd: return dnd
 
 def plural_check(smth):
-  return 's' if smth > 1 else ''
+    return 's' if smth > 1 else ''
+
+def countlines(start, lines=0, begin_start=None):
+    for thing in os.listdir(start):
+        thing = os.path.join(start, thing)
+        if os.path.isfile(thing):
+            if thing.endswith('.py'):
+                with open(thing, 'r') as f:
+                    newlines = f.readlines()
+                    newlines = len(newlines)
+                    lines += newlines
+
+    for thing in os.listdir(start):
+        thing = os.path.join(start, thing)
+        if os.path.isdir(thing):
+            lines = countlines(thing, lines, begin_start=start)
+
+    return lines
