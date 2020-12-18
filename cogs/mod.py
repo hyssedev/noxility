@@ -15,6 +15,7 @@ class Mod (commands.Cog):
     @commands.guild_only()
     @commands.bot_has_permissions(kick_members=True)
     @commands.has_guild_permissions(kick_members=True)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         """Kicks specified member."""
         if await cogs._utils.role_hierarchy(ctx, member): return
@@ -22,6 +23,19 @@ class Mod (commands.Cog):
             return await ctx.send(f"Error, you can't do this because my role is lower than **{member.name}**.")
         await ctx.guild.kick(discord.Object(id=member.id), reason=reason)
         await ctx.send(f"✅ Successfully **{str(ctx.command.name)}ed** {member.name}.")
+
+    @commands.command()
+    @commands.bot_has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_guild=True)
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def purge(self, ctx, amount: str):
+        """Purge an amount of messages in a channel."""
+        if not amount.isnumeric(): return await ctx.send("Error, please enter a correct number.")
+        if int(amount)>500 or int(amount)<1:
+            return await ctx.send('Error, invalid amount. Please enter a number between 2 and 500.')
+        await ctx.message.delete()
+        await ctx.message.channel.purge(limit=int(amount))
+        await ctx.send(f"✅ Sucesfully deleted **{int(amount)}** message{cogs._utils.plural_check(int(amount))}!", delete_after=5)
 
 def setup(bot):
     bot.add_cog(Mod(bot))

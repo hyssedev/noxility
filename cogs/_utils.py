@@ -90,7 +90,7 @@ class EmbedHelpCommand(commands.HelpCommand):
     # Set the embed colour here
 
     def __init__(self):
-        super().__init__(command_attrs={'help': 'Shows help about commands etc.', 'cooldown': commands.Cooldown(1,10,commands.BucketType.member)})
+        super().__init__(command_attrs={'help': 'Shows help about commands etc.', 'cooldown': commands.Cooldown(1,10,commands.BucketType.user), 'hidden': True})
 
     COLOUR = 0xf2c203
     
@@ -117,7 +117,7 @@ class EmbedHelpCommand(commands.HelpCommand):
                 filtered = await self.filter_commands(commands, sort=True)
                 if filtered:
                     # value = '\u2002'.join(c.name for c in commands if c.name != "help")
-                    value = ', '.join(c.name for c in commands if c.name != "help")
+                    value = ', '.join(c.name for c in commands)
                     if cog and cog.description:
                         value = '{0}\n{1}'.format(cog.description, value)
 
