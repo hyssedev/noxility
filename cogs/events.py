@@ -29,11 +29,11 @@ class Events (commands.Cog):
             h, m = divmod(m, 60)
             seconds = int(s) if s > 1 else round(s, 1)
             if int(h) == 0 and int(m) == 0:
-                await ctx.send(f' You need to wait {int(s) if s > 1 else round(s, 1)} second{"s" if int(s) != 1 else ""} to use this command!')
+                await ctx.send(f" You need to wait {int(s) if s > 1 else round(s, 1)} second{'s' if int(s) != 1 else ''} to use this command!")
             elif int(h) == 0 and int(m) != 0:
-                await ctx.send(f' You need to wait {int(m)} minutes and {int(s)} seconds to use this command!')
+                await ctx.send(f" You need to wait {int(m)} minute{'s' if int(m) != 1 else ''} and {int(s)} second{'s' if int(s) != 1 else ''} to use this command!")
             else:
-                await ctx.send(f' You need to wait {int(h)} hours, {int(m)} minutes and {int(s)} seconds to use this command!')
+                await ctx.send(f" You need to wait {int(h)} hour{'s' if int(h) != 1 else ''}, {int(m)} minute{'s' if int(m) != 1 else ''} and {int(s)} second{'s' if int(s) != 1 else ''} to use this command!")
         elif isinstance(error, commands.MaxConcurrencyReached):
             await ctx.send("Error, you've reached max capacity of command usage at once, please finish the previous one.")
         elif isinstance(error, commands.MissingRequiredArgument):

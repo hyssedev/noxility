@@ -86,6 +86,24 @@ class Info (commands.Cog):
         embed.add_field(name="Guild Channel List", value=f"**`[{len(ctx.guild.channels)}]` channel{cogs._utils.plural_check(len(ctx.guild.channels))} of which {len(ctx.guild.text_channels)} text and {len(ctx.guild.voice_channels)} voice**\n{channels}")
         await ctx.send(embed=embed)
 
+    @channel.command(name="slowmode")
+    @commands.bot_has_permissions(manage_channels=True)
+    @commands.has_guild_permissions(manage_channels=True)
+    async def slowmodee(self, ctx, delay: str):
+        if not delay.isnumeric(): return await ctx.send("Error, please enter a correct number.")
+        if int(delay) > 21598: return await ctx.send("Error, invalid range.")
+        await ctx.channel.edit(slowmode_delay=int(delay))
+        m, s = divmod(int(delay), 60)
+        h, m = divmod(m, 60)
+        if int(delay) == 0:
+            await ctx.send(f"✅ Successfully removed `{ctx.channel.name}'s` slowmode.") 
+        elif int(h) == 0 and int(m) == 0:
+            await ctx.send(f"✅ Successfully set `{ctx.channel.name}'s` slowmode to {int(s)} second{'s' if int(s) != 1 else ''}.")
+        elif int(h) == 0 and int(m) != 0:
+            await ctx.send(f"✅ Successfully set `{ctx.channel.name}'s` slowmode to {int(m)} minute{'s' if int(m) != 1 else ''} and {int(s)} second{'s' if int(s) != 1 else ''}.")
+        else:
+            await ctx.send(f"✅ Successfully set `{ctx.channel.name}'s` slowmode to {int(h)} hour{'s' if int(h) != 1 else ''}, {int(m)} minute{'s' if int(m) != 1 else ''} and {int(s)} second{'s' if int(s) != 1 else ''}.")
+
     @commands.group(invoke_without_command=False)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def role(self, ctx):
