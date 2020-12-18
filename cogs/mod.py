@@ -25,6 +25,7 @@ class Mod (commands.Cog):
         await ctx.send(f"✅ Successfully **{str(ctx.command.name)}ed** {member.name}.")
 
     @commands.command()
+    @commands.guild_only()
     @commands.bot_has_permissions(manage_guild=True)
     @commands.has_permissions(manage_guild=True)
     @commands.cooldown(1, 5, commands.BucketType.user)

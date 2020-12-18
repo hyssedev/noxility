@@ -13,6 +13,7 @@ class Info (commands.Cog):
         self.bot = bot
 
     @commands.group(invoke_without_command=False)
+    @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def guild(self, ctx):
         """Command group for many different guild related commands."""
@@ -51,6 +52,7 @@ class Info (commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.group(invoke_without_command=False)
+    @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def channel(self, ctx):
         """Command group for many different channel related commands."""
@@ -106,6 +108,7 @@ class Info (commands.Cog):
             await ctx.send(f"✅ Successfully set `{ctx.channel.name}'s` slowmode to {int(h)} hour{'s' if int(h) != 1 else ''}, {int(m)} minute{'s' if int(m) != 1 else ''} and {int(s)} second{'s' if int(s) != 1 else ''}.")
 
     @commands.group(invoke_without_command=False)
+    @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def role(self, ctx):
         """Command group for many different role related commands."""
