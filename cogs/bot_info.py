@@ -69,6 +69,7 @@ class Bot_Info (commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def ping(self, ctx):
+        """Shows the bot websocket & message sending latency."""
         before = time.monotonic()
         await ctx.trigger_typing()
         ping = int((time.monotonic() - before) * 1000)

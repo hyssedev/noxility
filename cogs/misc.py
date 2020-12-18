@@ -16,7 +16,7 @@ class Misc (commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
     async def lines(self, ctx):
-        """Shows how many members have the specified role."""
+        """Shows how many lines the Noxility project currently has."""
         embed = discord.Embed(colour=0xf2c203)
         embed.add_field(name="This project currently has", value=f"{cogs._utils.countlines(r'/root/noxility/')} lines")
         await ctx.send(embed=embed)

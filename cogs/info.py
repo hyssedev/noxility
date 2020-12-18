@@ -15,12 +15,12 @@ class Info (commands.Cog):
     @commands.group(invoke_without_command=False)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def guild(self, ctx):
-        """Command group for many different guild related commands,"""
+        """Command group for many different guild related commands."""
         if ctx.invoked_subcommand == None: await ctx.send("Error, this command requires at least 1 argument.")
 
     @guild.command(name="info")
     async def infooo(self, ctx):
-        """Shows info about current server"""
+        """Shows info about current server."""
         try:
             bans = len(await ctx.guild.bans())
         except:
@@ -34,7 +34,7 @@ class Info (commands.Cog):
 
     @guild.command()
     async def banner(selt, ctx):
-        """Retrieves the current guild's icon"""
+        """Retrieves the current guild's icon."""
         if not ctx.guild.banner: return await ctx.send("Error, this server does not have a banner.")
         embed = discord.Embed(title=f"{ctx.guild.name}'s banner", color=0xf2c203, timestamp=ctx.message.created_at)
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -43,7 +43,7 @@ class Info (commands.Cog):
 
     @guild.command()
     async def icon(selt, ctx):
-        """Retrieves the current guild's banner"""
+        """Retrieves the current guild's banner."""
         if not ctx.guild.icon: return await ctx.send("Error, this server does not have an icon.")
         embed = discord.Embed(title=f"{ctx.guild.name}'s icon", color=0xf2c203, timestamp=ctx.message.created_at)
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -90,6 +90,7 @@ class Info (commands.Cog):
     @commands.bot_has_permissions(manage_channels=True)
     @commands.has_guild_permissions(manage_channels=True)
     async def slowmodee(self, ctx, delay: str):
+        """Sets current channels slowmode to specified amount of seconds."""
         if not delay.isnumeric(): return await ctx.send("Error, please enter a correct number.")
         if int(delay) > 21598: return await ctx.send("Error, invalid range.")
         await ctx.channel.edit(slowmode_delay=int(delay))
@@ -121,7 +122,7 @@ class Info (commands.Cog):
 
     @role.command(name="list")
     async def list_(self, ctx):
-        """Retrieves a list about current guilds roles"""
+        """Retrieves a list about current guilds roles."""
         # roles = ", ".join([str(x) for x in ctx.guild.roles])
         roles = ""
         embed = discord.Embed(colour=0xf2c203)
@@ -219,7 +220,7 @@ class Info (commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def userinfo(self, ctx, member: discord.Member=None):
-        """Shows info about the mentioned user"""
+        """Shows info about the mentioned user."""
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
         created = (member.created_at).strftime("%d %B, %Y")
