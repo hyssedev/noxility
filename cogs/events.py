@@ -40,6 +40,8 @@ class Events (commands.Cog):
             message = await ctx.send(f"Error, `{error.param.name}` is a required argument that is missing.", delete_after=5)
         elif isinstance(error, commands.MemberNotFound):
             message = await ctx.send(f"Error, I couldn't find specified member.", delete_after=5)
+        elif isinstance(error, commands.UserNotFound):
+            message = await ctx.send(f"Error, I couldn't find specified user.", delete_after=5)
         elif isinstance(error, commands.RoleNotFound):
             message = await ctx.send(f"Error, I couldn't find specified role.", delete_after=5)
         elif isinstance(error, commands.EmojiNotFound):

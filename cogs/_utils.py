@@ -44,16 +44,39 @@ async def role_hierarchy(ctx, member):
     """ Custom way to check permissions when handling moderation commands """
     try:
         # Self checks
+        # if len([g for g in ctx.bot.guilds if g.get_member(member)]) == 0: return
         if member == ctx.author: return await ctx.send(f"Error, you can't do this to yourself.")
         if member.id == ctx.bot.user.id: return await ctx.send("Error, I can't do this to myself.")
         # Check if user bypasses
         if ctx.author.id == ctx.guild.owner.id: return False
         if member.id == bot.owner_id: return await ctx.send("Error, I cannot do this to my developer.")
         # Now permission check
-        if member.id == ctx.guild.owner.id or ctx.author.top_role == member.top_role or ctx.author.top_role < member.top_role:
+        elif member.id == ctx.guild.owner.id or ctx.author.top_role == member.top_role or ctx.author.top_role < member.top_role:
             return await ctx.send(f"Error, you can't do this because of role hierarchy.")
     except Exception:
         pass
+
+def can_execute_action(ctx, user, target):
+    return user.id == ctx.bot.owner_id or \
+           user == ctx.guild.owner or \
+           user.top_role > target.top_role
+
+async def get_or_fetch_member(self, guild, member_id):
+    member = guild.get_member(member_id)
+    if member is not None:
+        return member
+
+    shard = self.get_shard(guild.shard_id)
+    if shard.is_ws_ratelimited():
+        try:
+            member = await guild.fetch_member(member_id)
+        except discord.HTTPException:
+            return None
+
+    members = await guild.query_members(limit=1, user_ids=[member_id], cache=True)
+    if not members:
+        return None
+    return members[0]
 
 class MemberID(commands.Converter):
     async def convert(self, ctx, argument):
@@ -61,11 +84,18 @@ class MemberID(commands.Converter):
             m = await commands.MemberConverter().convert(ctx, argument)
         except commands.BadArgument:
             try:
-                return int(argument, base=10)
+                member_id = int(argument, base=10)
             except ValueError:
                 raise commands.BadArgument(f"{argument} is not a valid member or member ID.") from None
-        else:
-            return m
+            else:
+                m = await get_or_fetch_member(ctx.guild, member_id)
+                if m is None:
+                    # hackban case
+                    return type('_Hackban', (), {'id': member_id, '__str__': lambda s: f'Member ID {s.id}'})()
+
+        if not can_execute_action(ctx, ctx.author, m):
+            raise commands.BadArgument('You cannot do this action on this user due to role hierarchy.')
+        return m
 
 class Pag(Paginator):
     async def teardown(self):

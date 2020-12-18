@@ -11,7 +11,7 @@ class Mod (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(enabled=False)
     @commands.guild_only()
     @commands.bot_has_permissions(kick_members=True)
     @commands.has_guild_permissions(kick_members=True)
@@ -26,8 +26,8 @@ class Mod (commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.bot_has_permissions(manage_guild=True)
-    @commands.has_permissions(manage_guild=True)
+    @commands.bot_has_permissions(manage_messages=True)
+    @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def purge(self, ctx, amount: str):
         """Purge an amount of messages in a channel."""
@@ -37,6 +37,20 @@ class Mod (commands.Cog):
         await ctx.message.delete()
         await ctx.message.channel.purge(limit=int(amount))
         await ctx.send(f"✅ Sucesfully deleted **{int(amount)}** message{cogs._utils.plural_check(int(amount))}!", delete_after=5)
+
+    @commands.command(enabled=False, hidden=True)
+    @commands.guild_only()
+    @commands.bot_has_permissions(ban_members=True)
+    @commands.has_permissions(ban_members=True)
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def ban(self, ctx, user: discord.User):
+        if await cogs._utils.role_hierarchy(ctx, user): return
+        try:
+            await ctx.guild.ban(discord.Object(id=user.id))
+        except:
+            return await ctx.send(f"Error, can't ban member {user.name}.")
+
+
 
 def setup(bot):
     bot.add_cog(Mod(bot))

@@ -13,15 +13,6 @@ for cog in os.listdir("cogs"):
             print(f"{cog} loaded.")
         except Exception as e:
             print(f"{cog} couldn't be loaded.")
-            raise e        
-
-"""
-# advanced logging system
-logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(handler)
-"""
+            raise e      
 
 bot.run("Nzg1MTI4MjI4MjEyNzAzMjMz.X8zVpA.uPGZzBpz1sW6LXEtUoPzW8W52zo")
