@@ -17,7 +17,6 @@ class Mod (commands.Cog):
     @commands.has_guild_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         """Kicks specified member."""
-        # if member is None: return await ctx.send("Error, invalid member.")
         if await cogs._utils.role_hierarchy(ctx, member): return
         if ctx.guild.me.top_role <= member.top_role:
             return await ctx.send(f"Error, you can't do this because my role is lower than **{member.name}**.")

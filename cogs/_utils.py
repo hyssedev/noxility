@@ -88,6 +88,10 @@ class EmbedHelpCommand(commands.HelpCommand):
     bot = commands.Bot(help_command=EmbedHelpCommand())
     """
     # Set the embed colour here
+
+    def __init__(self):
+        super().__init__(command_attrs={'help': 'Shows help about commands etc.', 'cooldown': commands.Cooldown(1,10,commands.BucketType.member)})
+
     COLOUR = 0xf2c203
     
     def get_ending_note(self):

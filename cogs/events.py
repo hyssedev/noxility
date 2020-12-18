@@ -29,36 +29,58 @@ class Events (commands.Cog):
             h, m = divmod(m, 60)
             seconds = int(s) if s > 1 else round(s, 1)
             if int(h) == 0 and int(m) == 0:
-                await ctx.send(f" You need to wait {int(s) if s > 1 else round(s, 1)} second{'s' if int(s) != 1 else ''} to use this command!")
+                message = await ctx.send(f" You need to wait {int(s) if s > 1 else round(s, 1)} second{'s' if int(s) != 1 else ''} to use this command!")
             elif int(h) == 0 and int(m) != 0:
-                await ctx.send(f" You need to wait {int(m)} minute{'s' if int(m) != 1 else ''} and {int(s)} second{'s' if int(s) != 1 else ''} to use this command!")
+                message = await ctx.send(f" You need to wait {int(m)} minute{'s' if int(m) != 1 else ''} and {int(s)} second{'s' if int(s) != 1 else ''} to use this command!")
             else:
-                await ctx.send(f" You need to wait {int(h)} hour{'s' if int(h) != 1 else ''}, {int(m)} minute{'s' if int(m) != 1 else ''} and {int(s)} second{'s' if int(s) != 1 else ''} to use this command!")
+                message = await ctx.send(f" You need to wait {int(h)} hour{'s' if int(h) != 1 else ''}, {int(m)} minute{'s' if int(m) != 1 else ''} and {int(s)} second{'s' if int(s) != 1 else ''} to use this command!")
+            await asyncio.sleep(5)
+            await message.delete()
         elif isinstance(error, commands.MaxConcurrencyReached):
-            await ctx.send("Error, you've reached max capacity of command usage at once, please finish the previous one.")
+            message = await ctx.send("Error, you've reached max capacity of command usage at once, please finish the previous one.")
+            await asyncio.sleep(5)
+            await message.delete()
         elif isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f"Error, `{error.param.name}` is a required argument that is missing.")
+            message = await ctx.send(f"Error, `{error.param.name}` is a required argument that is missing.")
+            await asyncio.sleep(5)
+            await message.delete()
         elif isinstance(error, commands.MemberNotFound):
-            await ctx.send(f"Error, I couldn't find specified member.")
+            message = await ctx.send(f"Error, I couldn't find specified member.")
+            await asyncio.sleep(5)
+            await message.delete()
         elif isinstance(error, commands.RoleNotFound):
-            await ctx.send(f"Error, I couldn't find specified role.")
+            message = await ctx.send(f"Error, I couldn't find specified role.")
+            await asyncio.sleep(5)
+            await message.delete()
         elif isinstance(error, commands.EmojiNotFound):
-            await ctx.send(f"Error, I couldn't find specified emoji.")
+            message = await ctx.send(f"Error, I couldn't find specified emoji.")
+            await asyncio.sleep(5)
+            await message.delete()
         elif isinstance(error, commands.DisabledCommand):
-            await ctx.send(f'{ctx.command} has been disabled temporarily.')
+            message = await ctx.send(f'{ctx.command} has been disabled temporarily.')
+            await asyncio.sleep(5)
+            await message.delete()
         elif isinstance(error, commands.NoPrivateMessage):
             try:
-                await ctx.author.send(f'{ctx.command} can not be used in Private Messages.')
+                message = await ctx.author.send(f'{ctx.command} can not be used in Private Messages.')
+                await asyncio.sleep(5)
+                await message.delete()
             except discord.HTTPException:
                 pass
 
         elif isinstance(error, commands.MissingPermissions):
-            await ctx.send("Error, you have insufficient permissions.")
+            message = await ctx.send("Error, you have insufficient permissions.")
+            await asyncio.sleep(5)
+            await message.delete()
         elif isinstance(error, commands.BotMissingPermissions):
-            await ctx.send("Error, I do not have required permissions to do this.")
+            message = await ctx.send("Error, I do not have required permissions to do this.")
+            await asyncio.sleep(5)
+            await message.delete()
         else:
             # All other Errors not returned come here. And we can just print the default TraceBack.
-            await ctx.send("Unknown error occured, if you think this is a mistake please report it in our Support Server. Use `nox support` to see it.")
+            message = await ctx.send("Unknown error occured, if you think this is a mistake please report it in our Support Server. Use `nox support` to see it.")
+            await asyncio.sleep(5)
+            await message.delete()
             print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
         """ 

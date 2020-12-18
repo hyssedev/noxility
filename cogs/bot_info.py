@@ -42,11 +42,12 @@ class Bot_Info (commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def support(self, ctx):
-        """Shows Noxility's Server invite link"""
+        """Shows Noxility's Server invite link."""
         try:
             # try sending a dm
             user = self.bot.get_user(ctx.author.id)
             await user.send(f"{emote} **Noxility Server** - https://discord.com/invite/hHnejD2Xd6")
+            await ctx.send("Send you a DM with the Support Server invite link.")
         except:
             # if author has server messages disabled, send message to that channel
             await ctx.send(f"{emote} **Noxility Server** - https://discord.com/invite/hHnejD2Xd6")
@@ -54,7 +55,7 @@ class Bot_Info (commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def invite(self, ctx):
-        """Shows Noxility's invite link"""
+        """Shows Noxility's invite link."""
         await ctx.send(f"{emote} **Noxility Invite Link** - SOON")
 
     @commands.command()
