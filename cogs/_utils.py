@@ -109,7 +109,7 @@ class EmbedHelpCommand(commands.HelpCommand):
         embed = discord.Embed(title='Bot Commands', colour=self.COLOUR)
         description = self.context.bot.description
         if description:
-            embed.description = f"{description} It currently has {len([i for i in ctx.bot.walk_commands()])} commands.\n```[] = optional argument\n<> = required argument\nDo not write these when using commands.\nIf there is any space in a cog name, please type '_' instead of it.\nType nox help [command | module] for more help on a command or module.```\n"
+            embed.description = f"{description} It currently has {len([i for i in self.context.bot.walk_commands()])} commands.\n```[] = optional argument\n<> = required argument\nDo not write these when using commands.\nIf there is any space in a cog name, please type '_' instead of it.\nType nox help [command | module] for more help on a command or module.```\n"
 
         for cog, commands in mapping.items():
             name = 'No Category' if cog is None else str(cog.qualified_name).replace("_", " ")
