@@ -4,9 +4,10 @@ from contextlib import redirect_stdout
 from psutil._common import bytes2human
 import parsedatetime as pdt
 from dateutil.relativedelta import relativedelta
-from cogs._utils import human_timedelta
-from cogs._utils import emote
-import cogs._utils
+
+from utils.utils import human_timedelta
+from utils.utils import emote
+import utils.utils
 
 class Info (commands.Cog):
     def __init__(self, bot):
@@ -29,7 +30,7 @@ class Info (commands.Cog):
         created = (ctx.guild.created_at).strftime("%d %B, %Y")
         embed = discord.Embed(colour=0xf2c203)
         embed.set_thumbnail(url=f"{ctx.guild.icon_url}")
-        embed.add_field(name=f"**General Info**", value=f"{emote} **Name:** {ctx.guild.name}\n{emote} **Description:** {ctx.guild.description}\n{emote} **ID:** {ctx.guild.id}\n{emote} **Region:** {ctx.guild.region}\n{emote} **Verification Level:** {str(ctx.guild.verification_level).capitalize()}\n{emote} **Upload Limit:** {bytes2human(ctx.guild.filesize_limit)}B\n{emote} **Channels:** {len(ctx.guild.text_channels)} Text | {len(ctx.guild.voice_channels)} Voice\n{emote} **Emojis:** {len(ctx.guild.emojis)}/{ctx.guild.emoji_limit}\n{emote} **Created:** {created} ({cogs._utils.human_timedelta(ctx.guild.created_at)} ago)\n{emote} **Shard ID:** {ctx.guild.shard_id}\n{emote} **Boosters:** {ctx.guild.premium_subscription_count}\n{emote} **Boost Level:** {ctx.guild.premium_tier}", inline=False)
+        embed.add_field(name=f"**General Info**", value=f"{emote} **Name:** {ctx.guild.name}\n{emote} **Description:** {ctx.guild.description}\n{emote} **ID:** {ctx.guild.id}\n{emote} **Region:** {ctx.guild.region}\n{emote} **Verification Level:** {str(ctx.guild.verification_level).capitalize()}\n{emote} **Upload Limit:** {bytes2human(ctx.guild.filesize_limit)}B\n{emote} **Channels:** {len(ctx.guild.text_channels)} Text | {len(ctx.guild.voice_channels)} Voice\n{emote} **Emojis:** {len(ctx.guild.emojis)}/{ctx.guild.emoji_limit}\n{emote} **Created:** {created} ({utils.utils.human_timedelta(ctx.guild.created_at)} ago)\n{emote} **Shard ID:** {ctx.guild.shard_id}\n{emote} **Boosters:** {ctx.guild.premium_subscription_count}\n{emote} **Boost Level:** {ctx.guild.premium_tier}", inline=False)
         embed.add_field(name=f"**Member Info**", value=f"{emote} **Owner:** {ctx.guild.owner.name}#{ctx.guild.owner.discriminator}\n{emote} **Members:** {len(ctx.guild.members)} ({len([i for i in ctx.guild.members if i.status != discord.Status.offline])} online)\n{emote} **Bans:** {bans}\n{emote} **Roles:** {len(ctx.guild.roles)}", inline=False)
         await ctx.send(embed=embed)
 
@@ -82,10 +83,10 @@ class Info (commands.Cog):
         embed = discord.Embed(colour=0xf2c203)
         for index, channel in enumerate(ctx.guild.channels):
             if len(channels) >= 900:
-                embed.set_footer(text=f"...and other {len(ctx.guild.channels) - index} channel{cogs._utils.plural_check(len(ctx.guild.channels) - index)} (too many to show).")
+                embed.set_footer(text=f"...and other {len(ctx.guild.channels) - index} channel{utils.utils.plural_check(len(ctx.guild.channels) - index)} (too many to show).")
                 break
             channels += str(channel) + " "
-        embed.add_field(name="Guild Channel List", value=f"**`[{len(ctx.guild.channels)}]` channel{cogs._utils.plural_check(len(ctx.guild.channels))} of which {len(ctx.guild.text_channels)} text and {len(ctx.guild.voice_channels)} voice**\n{channels}")
+        embed.add_field(name="Guild Channel List", value=f"**`[{len(ctx.guild.channels)}]` channel{utils.utils.plural_check(len(ctx.guild.channels))} of which {len(ctx.guild.text_channels)} text and {len(ctx.guild.voice_channels)} voice**\n{channels}")
         await ctx.send(embed=embed)
 
     @channel.command(name="slowmode")
@@ -120,7 +121,7 @@ class Info (commands.Cog):
         created = (role.created_at).strftime("%d %B, %Y, %H:%M")
         owned_by = len(role.members)
         embed = discord.Embed(colour=role.colour)
-        embed.add_field(name=f"**User**", value=f"{emote} **Mention:** {role.mention}\n{emote} **ID:** {role.id}\n{emote} **Owned by:** {owned_by} member{cogs._utils.plural_check(owned_by)}\n{emote} **Created:** {created}\n{emote} **Position:** {role.position}\n{emote} **Hoisted:** {'<:noxcheck:787008166327615509>' if role.hoist else '<:noxcross1:787008036882350100>'}\n{emote} **Mentionable:** {'<:noxcheck:787008166327615509>' if role.mentionable else '<:noxcross1:787008036882350100>'}\n{emote} **Managed:** {'<:noxcheck:787008166327615509>' if role.managed else '<:noxcross1:787008036882350100>'}", inline=False)
+        embed.add_field(name=f"**User**", value=f"{emote} **Mention:** {role.mention}\n{emote} **ID:** {role.id}\n{emote} **Owned by:** {owned_by} member{utils.utils.plural_check(owned_by)}\n{emote} **Created:** {created}\n{emote} **Position:** {role.position}\n{emote} **Hoisted:** {'<:noxcheck:787008166327615509>' if role.hoist else '<:noxcross1:787008036882350100>'}\n{emote} **Mentionable:** {'<:noxcheck:787008166327615509>' if role.mentionable else '<:noxcross1:787008036882350100>'}\n{emote} **Managed:** {'<:noxcheck:787008166327615509>' if role.managed else '<:noxcross1:787008036882350100>'}", inline=False)
         await ctx.send(embed=embed)
 
     @role.command(name="list")
@@ -131,10 +132,10 @@ class Info (commands.Cog):
         embed = discord.Embed(colour=0xf2c203)
         for index, role in enumerate(ctx.guild.roles):
             if len(roles) >= 950:
-                embed.set_footer(text=f"...and other {len(ctx.guild.roles) - index} role{cogs._utils.plural_check(len(ctx.guild.roles) - index)} (too many to show).")
+                embed.set_footer(text=f"...and other {len(ctx.guild.roles) - index} role{utils.utils.plural_check(len(ctx.guild.roles) - index)} (too many to show).")
                 break
             roles += str(role) + " "
-        embed.add_field(name="Guild Role List", value=f"**`[{len(ctx.guild.roles)}]` role{cogs._utils.plural_check(len(ctx.guild.roles))}:** {roles}\n")
+        embed.add_field(name="Guild Role List", value=f"**`[{len(ctx.guild.roles)}]` role{utils.utils.plural_check(len(ctx.guild.roles))}:** {roles}\n")
         await ctx.send(embed=embed)
 
     @role.command(name="add")
@@ -170,8 +171,8 @@ class Info (commands.Cog):
                 members += f"`[{count}]` **{member}** (ID: {member.id})\n"
                 count += 1
             pages.append(members)
-        pages2 = [s + f"\n`{len(pages)} page{cogs._utils.plural_check(len(pages))}, {count-1} {'entries' if count-1 > 1 else 'entry'}`" for s in pages]
-        await cogs._utils.Pag(color=0xf2c203, entries=pages2, length=1, timeout=30).start(ctx)
+        pages2 = [s + f"\n`{len(pages)} page{utils.utils.plural_check(len(pages))}, {count-1} {'entries' if count-1 > 1 else 'entry'}`" for s in pages]
+        await utils.utils.Pag(color=0xf2c203, entries=pages2, length=1, timeout=30).start(ctx)
 
     @commands.group(invoke_without_command=False)
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -187,7 +188,7 @@ class Info (commands.Cog):
         if len(ctx.guild.emojis)==0: return await ctx.send("Error, this guild doesn't have any emoji.")
         for index, emoji in enumerate(ctx.guild.emojis):
             if len(emojis) >= 1000:
-                embed.set_footer(text=f"...and other {len(ctx.guild.emojis) - index} custom emoji{cogs._utils.plural_check(len(ctx.guild.emojis) - index)} (too many to show).")
+                embed.set_footer(text=f"...and other {len(ctx.guild.emojis) - index} custom emoji{utils.utils.plural_check(len(ctx.guild.emojis) - index)} (too many to show).")
                 break
             emojis += str(emoji) + " "
         embed.add_field(name=f"{ctx.guild.name} Custom Emojis List", value=f"{emojis}")
@@ -200,7 +201,7 @@ class Info (commands.Cog):
         embed = discord.Embed(colour=0xf2c203)
         created = (emoji.created_at).strftime("%d %B, %Y")
         embed.set_thumbnail(url=f"{emoji.url}")
-        embed.add_field(name="Emoji Info", value=f"{emote} **Name:** {emoji.name}\n{emote} **ID:** {emoji.id}\n{emote} **Created:** {created} ({cogs._utils.human_timedelta(emoji.created_at)} ago)\n{emote} **Animated:** {'<:check:787008166327615509>' if emoji.animated else '<:cross1:787008036882350100>'}\n{emote} **URL:** [click here]({emoji.url})")
+        embed.add_field(name="Emoji Info", value=f"{emote} **Name:** {emoji.name}\n{emote} **ID:** {emoji.id}\n{emote} **Created:** {created} ({utils.utils.human_timedelta(emoji.created_at)} ago)\n{emote} **Animated:** {'<:check:787008166327615509>' if emoji.animated else '<:cross1:787008036882350100>'}\n{emote} **URL:** [click here]({emoji.url})")
         await ctx.send(embed=embed)
 
     @emoji.command()
@@ -229,8 +230,8 @@ class Info (commands.Cog):
         created = (member.created_at).strftime("%d %B, %Y")
         joined = (member.joined_at).strftime("%d %B, %Y")
         embed.set_thumbnail(url=f"{member.avatar_url}")
-        embed.add_field(name=f"**General Info**", value=f"{emote} **Full name:** {member.name}#{member.discriminator}\n{emote} **User ID:** {member.id}\n{emote} **Nickname:** {member.display_name if member.display_name != member.name else 'None'}\n{emote} **Roles:** {int(len(member.roles))-1}\n{emote} **Activity:** {member.activities[0] if member.activities else 'None'}\n{emote} **Joined Server:** {joined} ({cogs._utils.human_timedelta(member.joined_at)} ago)\n{emote} **User Created:** {created} ({cogs._utils.human_timedelta(member.created_at)} ago)\n{emote} **Bot:** {'<:check:787008166327615509>' if member.bot else '<:cross1:787008036882350100>'}\n{emote} **Avatar url:** [click here]({member.avatar_url})", inline=False)
-        embed.add_field(name=f"**Status**", value=f"{cogs._utils.check_status(member, 2)} | \U0001f4f1 Mobile Status\n{cogs._utils.check_status(member, 3)} | \U0001f5a5 Desktop Status\n{cogs._utils.check_status(member, 1)} | <:noxweb:787015386322960405> Web Status")
+        embed.add_field(name=f"**General Info**", value=f"{emote} **Full name:** {member.name}#{member.discriminator}\n{emote} **User ID:** {member.id}\n{emote} **Nickname:** {member.display_name if member.display_name != member.name else 'None'}\n{emote} **Roles:** {int(len(member.roles))-1}\n{emote} **Activity:** {member.activities[0] if member.activities else 'None'}\n{emote} **Joined Server:** {joined} ({utils.utils.human_timedelta(member.joined_at)} ago)\n{emote} **User Created:** {created} ({utils.utils.human_timedelta(member.created_at)} ago)\n{emote} **Bot:** {'<:check:787008166327615509>' if member.bot else '<:cross1:787008036882350100>'}\n{emote} **Avatar url:** [click here]({member.avatar_url})", inline=False)
+        embed.add_field(name=f"**Status**", value=f"{utils.utils.check_status(member, 2)} | \U0001f4f1 Mobile Status\n{utils.utils.check_status(member, 3)} | \U0001f5a5 Desktop Status\n{utils.utils.check_status(member, 1)} | <:noxweb:787015386322960405> Web Status")
         await ctx.send(embed=embed)
 
 def setup(bot):

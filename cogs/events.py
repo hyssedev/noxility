@@ -4,7 +4,7 @@ from psutil._common import bytes2human
 import parsedatetime as pdt
 from dateutil.relativedelta import relativedelta
 from discord.ext import commands
-import cogs._utils
+import utils.utils
 
 class Events (commands.Cog):
     def __init__(self, bot):
