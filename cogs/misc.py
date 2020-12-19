@@ -1,3 +1,4 @@
+#pylint: disable=E0401
 from discord.ext import commands
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess, platform, psutil
 from contextlib import redirect_stdout
@@ -5,6 +6,7 @@ from psutil._common import bytes2human
 import parsedatetime as pdt
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+
 import utils.utils
 
 class Misc (commands.Cog):

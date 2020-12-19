@@ -1,10 +1,10 @@
+#pylint: disable=E0401
 from discord.ext import commands
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess, platform, psutil, datetime
 from contextlib import redirect_stdout
 from psutil._common import bytes2human
 import parsedatetime as pdt
 from dateutil.relativedelta import relativedelta
-
 from utils.utils import human_timedelta
 from utils.utils import emote
 import utils.utils
@@ -35,7 +35,7 @@ class Info (commands.Cog):
         await ctx.send(embed=embed)
 
     @guild.command()
-    async def banner(selt, ctx):
+    async def banner(self, ctx):
         """Retrieves the current guild's icon."""
         if not ctx.guild.banner: return await ctx.send("Error, this server does not have a banner.")
         embed = discord.Embed(title=f"{ctx.guild.name}'s banner", color=0xf2c203, timestamp=ctx.message.created_at)
@@ -44,7 +44,7 @@ class Info (commands.Cog):
         await ctx.send(embed=embed)
 
     @guild.command()
-    async def icon(selt, ctx):
+    async def icon(self, ctx):
         """Retrieves the current guild's banner."""
         if not ctx.guild.icon: return await ctx.send("Error, this server does not have an icon.")
         embed = discord.Embed(title=f"{ctx.guild.name}'s icon", color=0xf2c203, timestamp=ctx.message.created_at)
@@ -205,7 +205,7 @@ class Info (commands.Cog):
         await ctx.send(embed=embed)
 
     @emoji.command()
-    async def enlarge(sellf, ctx, emoji:discord.Emoji):
+    async def enlarge(self, ctx, emoji:discord.Emoji):
         """Enlarges specified emoji."""
         # TIP: Does not work with emojis that are in servers that the bot is not in
         await ctx.send(f"{emoji.url}")
