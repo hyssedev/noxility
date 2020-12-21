@@ -265,3 +265,8 @@ def countlines(start, lines=0, begin_start=None):
             lines = countlines(thing, lines, begin_start=start)
 
     return lines
+
+def degToCompass(num):
+    val=int((num/22.5)+0.5)
+    arr=["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
+    return arr[(val % 16)]

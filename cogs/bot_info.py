@@ -69,11 +69,11 @@ class Bot_Info (commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 60*60*6, commands.BucketType.user)
-    async def feedback(self, ctx, *, feedback: str):
+    async def feedback(self, ctx, *, text: str):
         """Sends any kind of feedback to the developers: bugs, suggestions and so on."""
         channel = self.bot.get_channel(787694632074608640)
         created = (ctx.message.created_at).strftime("%d %B, %Y, %H:%M")
-        await channel.send(f"**Feedback from {ctx.author.name}#{ctx.author.discriminator} (ID: {ctx.author.id})**\n{emote} Text: {feedback}\n\n{emote} Feedback sent on **{created}**.")
+        await channel.send(f"**Feedback from {ctx.author.name}#{ctx.author.discriminator} (ID: {ctx.author.id})**\n{emote} Text: {text}\n\n{emote} Feedback sent on **{created}**.")
         await ctx.send("Thank you for your feedback.")
 
     @commands.command()
@@ -85,6 +85,15 @@ class Bot_Info (commands.Cog):
         ping = int((time.monotonic() - before) * 1000)
         wsping = round(self.bot.ws.latency*1000)
         embed = discord.Embed(title="Latency", description=f"**Message latency:** `{ping}ms`\n**Websocket latency:** `{wsping}ms`", colour=0xf2c203)
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.max_concurrency(1, per=commands.BucketType.default, wait=False)
+    async def lines(self, ctx):
+        """Shows how many lines the Noxility project currently has."""
+        embed = discord.Embed(colour=0xf2c203)
+        embed.add_field(name="This project currently has", value=f"{utils.utils.countlines(r'/root/noxility/')} lines")
         await ctx.send(embed=embed)
 
 def setup(bot):

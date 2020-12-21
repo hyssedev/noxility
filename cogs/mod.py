@@ -1,3 +1,4 @@
+#pylint: disable=E0401
 from discord.ext import commands
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess, platform, psutil
 from contextlib import redirect_stdout

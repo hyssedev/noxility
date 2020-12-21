@@ -85,7 +85,7 @@ class Developer (commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def reload(self, ctx, cog=None):
-        """Realods specified cog."""
+        """Reloads specified cog."""
         if not cog:
             # No cog, means we reload all cogs
             async with ctx.typing():
