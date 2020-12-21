@@ -1,3 +1,4 @@
+#pylint: disable=E0401
 from discord.ext import commands
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess, platform, psutil, random, aiohttp
 from contextlib import redirect_stdout
@@ -15,6 +16,7 @@ class Fun (commands.Cog):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def penis(self, ctx, member:discord.Member=None):
         """Shows you the specified users pp size."""
+        if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.")
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
         size = random.randint(1, 20)
@@ -25,6 +27,7 @@ class Fun (commands.Cog):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def howgay(self, ctx, member:discord.Member=None):
         """Shows you how gay the specified user is."""
+        if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.")
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
         embed.add_field(name="Gay checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** gay.")
@@ -44,12 +47,13 @@ class Fun (commands.Cog):
         """Inserts clapping emojis between your words."""
         if text == None: return
         if " " not in text: return
-        await ctx.send(text.replace(' ', '\U0001f44f'))
+        await ctx.send(text.replace(' ', ' \U0001f44f ')+f"\n\n**-- from {ctx.author.name}#{ctx.author.discriminator}**")
 
     @commands.command(aliases=["stink"])
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def stinky(self, ctx, member:discord.Member=None):
         """Shows you how stinky the specified user is."""
+        if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.")
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
         embed.add_field(name="Stink checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** stinky.")
@@ -59,6 +63,7 @@ class Fun (commands.Cog):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def simp(self, ctx, member:discord.Member=None):
         """Shows you how simp the specified user is."""
+        if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.")
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
         embed.add_field(name="SIMP checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** simp.")
@@ -66,8 +71,19 @@ class Fun (commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
+    async def howsad(self, ctx, member:discord.Member=None):
+        """Shows you how sad the specified user is."""
+        if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.")
+        member = ctx.author if not member else member
+        embed = discord.Embed(colour=0xf2c203)
+        embed.add_field(name="Sad checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** sad.")
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def hot(self, ctx, member:discord.Member=None):
         """Shows you how hot the specified user is."""
+        if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.")
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
         embed.add_field(name="Hot checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** hot.")
@@ -108,6 +124,7 @@ class Fun (commands.Cog):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def pee(self, ctx, member:discord.Member=None):
         """Pee on someone."""
+        if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.")
         member= ctx.author if not member else member
         await ctx.send(f"**{ctx.author.name}** peed on **{'himself' if member == ctx.author else member.name}**.")
 
@@ -115,6 +132,7 @@ class Fun (commands.Cog):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def poop(self, ctx, member:discord.Member=None):
         """Poop on someone."""
+        if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.")
         member= ctx.author if not member else member
         await ctx.send(f"**{ctx.author.name}** pooped on **{'himself' if member == ctx.author else member.name}**.")
 
