@@ -19,6 +19,8 @@ class Mod (commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         """Kicks specified member."""
+        if member == ctx.author: return await ctx.send(f"Error, you can't do this to yourself.")
+        if member.id == ctx.bot.user.id: return await ctx.send("Error, I can't do this to myself.")
         if ctx.guild.me.top_role <= member.top_role: return await ctx.send(f"Error, you can't do this because my role is lower than **{member.name}**.")
         if ctx.author.id != ctx.guild.owner.id:
             if ctx.author.top_role <= member.top_role: return await ctx.send(f"Error, you can't do this because **{member.name}** has a higher role than you do.")
@@ -34,7 +36,7 @@ class Mod (commands.Cog):
         """Purge an amount of messages in a channel."""
         if not amount.isnumeric(): return await ctx.send("Error, please enter a correct number.")
         if int(amount)>500 or int(amount)<1:
-            return await ctx.send('Error, invalid amount. Please enter a number between 2 and 500.')
+            return await ctx.send('Error, invalid amount. Please enter a number between 1 and 500.')
         await ctx.message.delete()
         await ctx.message.channel.purge(limit=int(amount))
         await ctx.send(f"✅ Sucesfully deleted **{int(amount)}** message{utils.utils.plural_check(int(amount))}!", delete_after=5)
@@ -65,6 +67,9 @@ class Mod (commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def ban(self, ctx, member: utils.utils.MemberID):
         """Bans specified user. Works even if the member is not in the current guild."""
+        # if member == ctx.author.id: return await ctx.send(f"Error, you can't do this to yourself.")
+        # if member == ctx.bot.user.id: return await ctx.send("Error, I can't do this to myself.")
+        if ctx.guild.me.top_role <= member.top_role: return await ctx.send(f"Error, you can't do this because my role is lower than **{member.name}**.")
         try:
             if ctx.author.id != ctx.guild.owner.id:
                 if ctx.author.top_role <= member.top_role: return await ctx.send(f"Error, you can't do this because **{member.name}** has a higher role than you do.")

@@ -1,7 +1,7 @@
 from discord.ext import commands, tasks
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess
 from contextlib import redirect_stdout
-
+ # pylint: disable=no-member
 class Developer (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
