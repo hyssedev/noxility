@@ -169,7 +169,7 @@ class Developer (commands.Cog):
     # ----- updating activity every hour ------
     @tasks.loop(minutes=60)
     async def activity(self):
-        await self.bot.change_presence(activity=discord.Game(name=f"nox help | {str(len(self.bot.guilds))} servers"))
+        await self.bot.change_presence(activity=discord.Game(name=f"nox help | {str(len(self.bot.guilds))} guilds"))
 
     @activity.after_loop
     async def post_activity(self):

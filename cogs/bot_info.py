@@ -1,3 +1,4 @@
+#pylint: disable=E0401
 from discord.ext import commands
 import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess, platform, psutil, datetime
 from contextlib import redirect_stdout
@@ -25,7 +26,7 @@ class Bot_Info (commands.Cog):
         embed.set_footer(text="Thank you for using Noxility!", icon_url=self.bot.user.avatar_url)
         embed.add_field(name=f"**General Information**", value=f"{emote} **Developer:** {self.bot.get_user(199375184057073664)}\n{emote} **Library:** discord.py {discord.__version__}\n{emote} **Uptime**: {human_timedelta(self.bot.uptime)}\n{emote} **Created**: 6 December 2020 ({human_timedelta(datetime.datetime(2020, 12, 6))} ago)\n{emote} **Python:** {platform.python_version()}", inline=False)
         embed.add_field(name=f"**Stats**",  value=f"{emote} **Commands loaded:** {len([i for i in self.bot.walk_commands()])}\n{emote} **Servers:** {str(len(self.bot.guilds))}\n{emote} **Users:** {len(self.bot.users)}\n{emote} **Latency:** Websocket: {int(round(self.bot.latency * 1000, 1))}ms, Message: {ping}ms", inline=False)
-        embed.add_field(name=f"**Links**", value=f"{emote} **Support Server:** [Noxility](https://discord.gg/hHnejD2Xd6)\n{emote} **Invite:** SOON\n{emote} **Vote:** SOON", inline=False)
+        embed.add_field(name=f"**Links**", value=f"{emote} **Support Server:** [Noxility](https://discord.gg/hHnejD2Xd6)\n{emote} **Invite:** [click here](https://discord.com/api/oauth2/authorize?client_id=785128228212703233&permissions=8&scope=bot)\n{emote} **Vote:** SOON", inline=False)
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -57,7 +58,14 @@ class Bot_Info (commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def invite(self, ctx):
         """Shows Noxility's invite link."""
-        await ctx.send(f"{emote} **Noxility Invite Link** - SOON")
+        try:
+            # try sending a dm
+            user = self.bot.get_user(ctx.author.id)
+            await user.send(f"{emote} **Noxility Invite Link** - https://discord.com/api/oauth2/authorize?client_id=785128228212703233&permissions=8&scope=bot")
+            await ctx.send("Sent you a DM with Noxility's invite link.")
+        except:
+            # if author has server messages disabled, send message to that channel
+            await ctx.send(f"{emote} **Noxility Invite Link** - https://discord.com/api/oauth2/authorize?client_id=785128228212703233&permissions=8&scope=bot")
 
     @commands.command()
     @commands.cooldown(1, 60*60*6, commands.BucketType.user)
