@@ -26,7 +26,7 @@ class Bot_Info (commands.Cog):
         embed.set_footer(text="Thank you for using Noxility!", icon_url=self.bot.user.avatar_url)
         embed.add_field(name=f"**General Information**", value=f"{emote} **Developer:** {self.bot.get_user(199375184057073664)}\n{emote} **Library:** discord.py {discord.__version__}\n{emote} **Uptime**: {human_timedelta(self.bot.uptime)}\n{emote} **Created**: 6 December 2020 ({human_timedelta(datetime.datetime(2020, 12, 6))} ago)\n{emote} **Python:** {platform.python_version()}", inline=False)
         embed.add_field(name=f"**Stats**",  value=f"{emote} **Commands loaded:** {len([i for i in self.bot.walk_commands()])}\n{emote} **Servers:** {str(len(self.bot.guilds))}\n{emote} **Users:** {len(self.bot.users)}\n{emote} **Latency:** Websocket: {int(round(self.bot.latency * 1000, 1))}ms, Message: {ping}ms", inline=False)
-        embed.add_field(name=f"**Links**", value=f"{emote} **Support Server:** [Noxility](https://discord.gg/hHnejD2Xd6)\n{emote} **Invite:** [click here](https://discord.com/api/oauth2/authorize?client_id=785128228212703233&permissions=8&scope=bot)\n{emote} **Vote:** SOON", inline=False)
+        embed.add_field(name=f"**Links**", value=f"{emote} **Support Server:** [Noxility](https://discord.gg/BnzYDcKWbt)\n{emote} **Invite:** [click here](https://discord.com/api/oauth2/authorize?client_id=785128228212703233&permissions=8&scope=bot)\n{emote} **Vote:** [click here](https://top.gg/bot/785128228212703233/vote)", inline=False)
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -48,11 +48,11 @@ class Bot_Info (commands.Cog):
         try:
             # try sending a dm
             user = self.bot.get_user(ctx.author.id)
-            await user.send(f"{emote} **Noxility Server** - https://discord.com/invite/hHnejD2Xd6")
+            await user.send(f"{emote} **Noxility Server** - https://discord.gg/BnzYDcKWbt")
             await ctx.send("Sent you a DM with the Support Server invite link.")
         except:
             # if author has server messages disabled, send message to that channel
-            await ctx.send(f"{emote} **Noxility Server** - https://discord.com/invite/hHnejD2Xd6")
+            await ctx.send(f"{emote} **Noxility Server** - https://discord.gg/BnzYDcKWbt")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -83,7 +83,7 @@ class Bot_Info (commands.Cog):
         before = time.monotonic()
         await ctx.trigger_typing()
         ping = int((time.monotonic() - before) * 1000)
-        wsping = round(self.bot.ws.latency*1000)
+        wsping = round(self.bot.latency*1000)
         embed = discord.Embed(title="Latency", description=f"**Message latency:** `{ping}ms`\n**Websocket latency:** `{wsping}ms`", colour=0xf2c203)
         await ctx.send(embed=embed)
 
@@ -95,6 +95,19 @@ class Bot_Info (commands.Cog):
         embed = discord.Embed(colour=0xf2c203)
         embed.add_field(name="This project currently has", value=f"{utils.utils.countlines(r'/root/noxility/')} lines")
         await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def vote(self, ctx):
+        """Shows Noxility's vote link."""
+        try:
+            # try sending a dm
+            user = self.bot.get_user(ctx.author.id)
+            await user.send(f"{emote} **Noxility Vote Link** - https://top.gg/bot/785128228212703233/vote\n\nThank you for voting me!")
+            await ctx.send("Sent you a DM with Noxility's vote link.")
+        except:
+            # if author has server messages disabled, send message to that channel
+            await ctx.send(f"{emote} **Noxility Vote Link** - https://top.gg/bot/785128228212703233/vote\n\nThank you for voting me!")
 
 def setup(bot):
     bot.add_cog(Bot_Info(bot))

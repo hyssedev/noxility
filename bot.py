@@ -2,7 +2,7 @@ from discord.ext import commands
 import discord, os, asyncio, logging
 import utils.utils
 
-bot = commands.Bot(command_prefix=['nox ', 'Nox ', 'NOX ', 'noxility', 'Noxility'], owner_id=199375184057073664, intents=discord.Intents.all(), help_command=utils.utils.EmbedHelpCommand(), description="Noxility is a powerful bot with all kinds of commands, ready to make your server more fun & enjoyable.")
+bot = commands.AutoShardedBot(command_prefix=['nox ', 'Nox ', 'NOX ', 'noxility', 'Noxility'], owner_id=199375184057073664, intents=discord.Intents.all(), help_command=utils.utils.EmbedHelpCommand(), description="Noxility is a powerful bot with all kinds of commands, ready to make your server more fun & enjoyable.")
 logging.basicConfig(level=logging.INFO) 
 
 for cog in os.listdir("cogs"):

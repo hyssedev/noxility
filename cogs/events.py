@@ -1,5 +1,5 @@
 #pylint: disable=E0401
-import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess, platform, psutil, datetime, json
+import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess, platform, psutil, datetime, json, dbl
 from contextlib import redirect_stdout
 from psutil._common import bytes2human
 import parsedatetime as pdt
@@ -10,6 +10,11 @@ import utils.utils
 class Events (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+        # top.gg autopost
+        self.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4NTEyODIyODIxMjcwMzIzMyIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA4NzI1Mjg0fQ.IdeT0YpZOGa-fch94gGFPwcnQgIK1uBvp2sxAlrsbmI'  # set this to your DBL token
+        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='=nSebdFy$x?AAshZ!VaX8a$fj', webhook_port=5000, autopost=True)
+        # self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True)  # Autopost will post your guild count every 30 minutes
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -86,6 +91,28 @@ class Events (commands.Cog):
         # Ignoring messages sent by the bot itself
         if message.author.id == self.bot.user.id:
             return
+
+    # ----- top.gg server count auto -----
+    @commands.Cog.listener()
+    async def on_guild_post(self):
+        print("Server count posted successfully")
+
+    # ------ top.gg vote counter auto ------
+    @commands.Cog.listener()
+    async def on_dbl_vote(self, data):
+        channel = self.bot.get_channel(791284042732666891)
+        user = self.bot.get_user(int(data['user']))
+        embed = discord.Embed(colour=0xf2c203, description=f"**{user}** has just voted for **Noxility**, you can vote for the bot [here](https://top.gg/bot/785128228212703233/vote).")
+        await channel.send(embed=embed)
+        print(data)
+
+    @commands.Cog.listener()
+    async def on_dbl_test(self, data):
+        channel = self.bot.get_channel(791284042732666891)
+        user = self.bot.get_user(int(data['user']))
+        embed = discord.Embed(colour=0xf2c203, description=f"**{user}** has just voted for **Noxility**, you can vote for the bot [here](https://top.gg/bot/785128228212703233/vote).")
+        await channel.send(embed=embed)
+        print(data)
 
 def setup(bot):
     bot.add_cog(Events(bot))
