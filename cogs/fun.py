@@ -8,6 +8,20 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import utils.utils
 
+def capitalize_2nd(s):
+        ret = ""
+        i = True  # capitalize
+        for char in s:
+            if i: ret += char.lower()
+            else: ret += char.upper()
+            if char != ' ': i = not i
+        return ret
+
+uselessweb = {
+	"author": "@twholman - http://www.theuselessweb.com/",
+	"uselessweb": ["http://heeeeeeeey.com/","http://thatsthefinger.com/","http://cant-not-tweet-this.com/","http://eelslap.com/","http://www.staggeringbeauty.com/","http://burymewithmymoney.com/","http://www.fallingfalling.com/","http://ducksarethebest.com/","http://www.trypap.com/","http://www.republiquedesmangues.fr/","http://www.movenowthinklater.com/","http://www.partridgegetslucky.com/","http://www.rrrgggbbb.com/","http://beesbeesbees.com/","http://www.sanger.dk/", "http://www.koalastothemax.com/", "http://www.everydayim.com/", "http://www.leduchamp.com/", "http://grandpanoclothes.com/", "http://www.haneke.net/", "http://instantostrich.com/", "http://r33b.net/", "http://randomcolour.com/", "http://cat-bounce.com/", "http://cachemonet.com/", "http://www.sadforjapan.com/", "http://www.taghua.com/", "http://chrismckenzie.com/", "http://hasthelargehadroncolliderdestroyedtheworldyet.com/", "http://ninjaflex.com/", "http://iloveyoulikeafatladylovesapples.com/", "http://ihasabucket.com/", "http://corndogoncorndog.com/", "http://giantbatfarts.com/", "http://www.ringingtelephone.com/", "http://www.pointerpointer.com/", "http://www.pleasedonate.biz/", "http://imaninja.com/", "http://willthefuturebeaweso.me/", "http://salmonofcapistrano.com/", "http://www.ismycomputeron.com/", "http://www.ooooiiii.com/", "http://www.wwwdotcom.com/", "http://www.nullingthevoid.com/", "http://www.muchbetterthanthis.com/", "http://www.ouaismaisbon.ch/", "http://iamawesome.com/", "http://www.pleaselike.com/", "http://crouton.net/", "http://corgiorgy.com/", "http://www.electricboogiewoogie.com/", "http://www.nelson-haha.com/", "http://www.wutdafuk.com/", "http://unicodesnowmanforyou.com/", "http://tencents.info/", "http://intotime.com/", "http://leekspin.com/", "http://minecraftstal.com/", "http://www.riddlydiddly.com/", "http://www.patience-is-a-virtue.org/", "http://whitetrash.nl/", "http://www.theendofreason.com/", "http://zombo.com", "http://secretsfornicotine.com/", "http://pixelsfighting.com/", "http://crapo.la/", "http://baconsizzling.com/", "http://isitwhite.com/", "http://noot.space/", "http://tomsdog.com/", "http://goat.com/","https://www.dialupsound.com/","http://computerpowertest.com/","http://www.eeyup.com/","http://www.nevernowhere.com/","http://make-everything-ok.com/","http://thenicestplaceontheinter.net/","http://www.nyan.cat/","http://zombo.com/","http://gprime.net/game.php/dodgethedot","http://blank.org/","http://www.thedancinglion.com/","http://touchpianist.com/","http://www.whatsmystarbucksname.com/","http://time.tetrasign.com/emojiclock/","http://2015.tetrasign.com/","http://www.youcanseethemilkyway.com/","http://kolor.moro.es/","http://foaas.com/"]
+}
+
 class Fun (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -194,11 +208,12 @@ class Fun (commands.Cog):
         msg = list(text)
         regional_list = [self.regionals[x.lower()] if x.isalnum() or x in ["!", "?"] else x for x in msg]
         regional_output = '\u200b'.join(regional_list)
-        await ctx.send(regional_output)
+        await ctx.send(f"{regional_output}\n\n**-- from {ctx.author.name}#{ctx.author.discriminator}**")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def leetify(self, ctx, *, text=None):
+        """Will leetify text."""
         if text == None: return
         for char in text:
             if char == 'a': text = text.replace('a','4')
@@ -210,7 +225,20 @@ class Fun (commands.Cog):
             elif char == 't': text = text.replace('t','7')
             else:
                 pass
-        await ctx.send(text)
+        await ctx.send(f"{text}\n\n**-- from {ctx.author.name}#{ctx.author.discriminator}**")
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def mock(self, ctx, *, text=None):
+        """Will mock a user."""
+        if text == None: return
+        await ctx.send(f"{capitalize_2nd(text)}\nhttps://pyxis.nymag.com/v1/imgs/09c/923/65324bb3906b6865f904a72f8f8a908541-16-spongebob-explainer.rsquare.w700.jpg\n\n**-- from {ctx.author.name}#{ctx.author.discriminator}**")
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def uselessweb(self, ctx):
+        """Returns a random useless site."""
+        await ctx.send(random.choice(uselessweb['uselessweb']))
 
 def setup(bot):
     bot.add_cog(Fun(bot))
