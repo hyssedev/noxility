@@ -11,6 +11,26 @@ import utils.utils
 class Fun (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.regionals = {'a': '\N{REGIONAL INDICATOR SYMBOL LETTER A}', 'b': '\N{REGIONAL INDICATOR SYMBOL LETTER B}',
+                          'c': '\N{REGIONAL INDICATOR SYMBOL LETTER C}',
+                          'd': '\N{REGIONAL INDICATOR SYMBOL LETTER D}', 'e': '\N{REGIONAL INDICATOR SYMBOL LETTER E}',
+                          'f': '\N{REGIONAL INDICATOR SYMBOL LETTER F}',
+                          'g': '\N{REGIONAL INDICATOR SYMBOL LETTER G}', 'h': '\N{REGIONAL INDICATOR SYMBOL LETTER H}',
+                          'i': '\N{REGIONAL INDICATOR SYMBOL LETTER I}',
+                          'j': '\N{REGIONAL INDICATOR SYMBOL LETTER J}', 'k': '\N{REGIONAL INDICATOR SYMBOL LETTER K}',
+                          'l': '\N{REGIONAL INDICATOR SYMBOL LETTER L}',
+                          'm': '\N{REGIONAL INDICATOR SYMBOL LETTER M}', 'n': '\N{REGIONAL INDICATOR SYMBOL LETTER N}',
+                          'o': '\N{REGIONAL INDICATOR SYMBOL LETTER O}',
+                          'p': '\N{REGIONAL INDICATOR SYMBOL LETTER P}', 'q': '\N{REGIONAL INDICATOR SYMBOL LETTER Q}',
+                          'r': '\N{REGIONAL INDICATOR SYMBOL LETTER R}',
+                          's': '\N{REGIONAL INDICATOR SYMBOL LETTER S}', 't': '\N{REGIONAL INDICATOR SYMBOL LETTER T}',
+                          'u': '\N{REGIONAL INDICATOR SYMBOL LETTER U}',
+                          'v': '\N{REGIONAL INDICATOR SYMBOL LETTER V}', 'w': '\N{REGIONAL INDICATOR SYMBOL LETTER W}',
+                          'x': '\N{REGIONAL INDICATOR SYMBOL LETTER X}',
+                          'y': '\N{REGIONAL INDICATOR SYMBOL LETTER Y}', 'z': '\N{REGIONAL INDICATOR SYMBOL LETTER Z}',
+                          '0': '0⃣', '1': '1⃣', '2': '2⃣', '3': '3⃣',
+                          '4': '4⃣', '5': '5⃣', '6': '6⃣', '7': '7⃣', '8': '8⃣', '9': '9⃣', '!': '\u2757',
+                          '?': '\u2753'}
 
     @commands.command(aliases=["pp", "ppsize"])
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -141,6 +161,56 @@ class Fun (commands.Cog):
     async def coinflip(self, ctx):
         """Flip a coin."""
         await ctx.send(f"You flipped a coin and it landed on **{random.choice(['tails', 'heads'])}**.")
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def dog(self, ctx):
+        """Shows you a dog picture."""
+        try:
+            async with aiohttp.ClientSession() as cs:
+                async with cs.get('https://dog.ceo/api/breeds/image/random') as r:
+                    res = await r.json()
+                    await ctx.send(res['message'])
+        except:
+            raise discord.errors.Forbidden
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def cat(self, ctx):
+        """Shows you a cat picture."""
+        try:
+            async with aiohttp.ClientSession(headers={}) as cs:
+                async with cs.get('https://api.thecatapi.com/v1/images/search') as r:
+                    res = await r.json()
+                    await ctx.send(res[0]['url'])
+        except:
+            raise discord.errors.Forbidden
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def emojify(self, ctx, *, text=None):
+        """Emojifies the specified text."""
+        if text == None: return
+        msg = list(text)
+        regional_list = [self.regionals[x.lower()] if x.isalnum() or x in ["!", "?"] else x for x in msg]
+        regional_output = '\u200b'.join(regional_list)
+        await ctx.send(regional_output)
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def leetify(self, ctx, *, text=None):
+        if text == None: return
+        for char in text:
+            if char == 'a': text = text.replace('a','4')
+            elif char == 'b': text = text.replace('b','8')
+            elif char == 'e': text = text.replace('e','3')
+            elif char == 'l': text = text.replace('l','1')
+            elif char == 'o': text = text.replace('o','0')
+            elif char == 's': text = text.replace('s','5')
+            elif char == 't': text = text.replace('t','7')
+            else:
+                pass
+        await ctx.send(text)
 
 def setup(bot):
     bot.add_cog(Fun(bot))
