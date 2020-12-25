@@ -1,12 +1,14 @@
 #pylint: disable=E0401
 from discord.ext import commands
-import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess, platform, psutil, random, aiohttp
+import asyncio, traceback, discord, inspect, textwrap, importlib, io, os, re, sys, copy, time, subprocess, platform, psutil, random, aiohttp, dbl
 from contextlib import redirect_stdout
 from psutil._common import bytes2human
 import parsedatetime as pdt
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import utils.utils
+
+# MOVE ALL THESE INTO UTILS
 
 def capitalize_2nd(s):
         ret = ""
@@ -45,15 +47,24 @@ class Fun (commands.Cog):
                           '0': '0⃣', '1': '1⃣', '2': '2⃣', '3': '3⃣',
                           '4': '4⃣', '5': '5⃣', '6': '6⃣', '7': '7⃣', '8': '8⃣', '9': '9⃣', '!': '\u2757',
                           '?': '\u2753'}
+    
+    async def fun_checker(self, cmd:str, member=None):
+        if cmd == 'penis': return random.randint(1, 20) if not await self.bot.dblpy.get_user_vote(member.id) else random.randint(6, 20)
+        elif cmd == 'howgay': return random.randint(0, 100) if not await self.bot.dblpy.get_user_vote(member.id) else random.randint(0, 70)
+        elif cmd == 'stinky': return random.randint(0, 100) if not await self.bot.dblpy.get_user_vote(member.id) else random.randint(0, 70)
+        elif cmd == 'simp': return random.randint(0, 100) if not await self.bot.dblpy.get_user_vote(member.id) else random.randint(0, 70)
+        elif cmd == 'howsad': return random.randint(0, 100) if not await self.bot.dblpy.get_user_vote(member.id) else random.randint(0, 70)
+        elif cmd == 'hot': return random.randint(0, 100) if not await self.bot.dblpy.get_user_vote(member.id) else random.randint(30, 100)
+        elif cmd == 'from': return f'\n\n**-- from {member.name}#{member.discriminator}**' if not await self.bot.dblpy.get_user_vote(member.id) else ''
 
     @commands.command(aliases=["pp", "ppsize"])
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def penis(self, ctx, member:discord.Member=None):
         """Shows you the specified users pp size."""
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
-        member = ctx.author if not member else member
+        member = ctx.author if not member else member 
         embed = discord.Embed(colour=0xf2c203)
-        size = random.randint(1, 20)
+        size = await Fun.fun_checker(self, 'penis', member)
         embed.add_field(name="PP size", value=f"{member.name+'`s' if member != ctx.author else 'Your'} PP size is **{size}cm**.\n8{'='*int(size/2)}D")
         await ctx.send(embed=embed)
 
@@ -64,7 +75,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Gay checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** gay.")
+        embed.add_field(name="Gay checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'howgay', member)}%** gay.")
         await ctx.send(embed=embed)
 
     @commands.command(name="8ball")
@@ -90,7 +101,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Stink checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** stinky.")
+        embed.add_field(name="Stink checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'stinky', member)}%** stinky.")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -100,7 +111,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="SIMP checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** simp.")
+        embed.add_field(name="SIMP checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'simp', member)}%** simp.")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -110,7 +121,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Sad checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** sad.")
+        embed.add_field(name="Sad checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'howsad', member)}%** sad.")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -120,7 +131,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Hot checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{random.randint(0, 100)}%** hot.")
+        embed.add_field(name="Hot checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'hot', member)}%** hot.")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -152,7 +163,7 @@ class Fun (commands.Cog):
     async def reverse(self, ctx, *, text=None):
         """.txet deificeps sesreveR"""
         if text == None: return
-        await ctx.send(str(text)[::-1])
+        await ctx.send(f"{str(text)[::-1]}{await Fun.fun_checker(self, 'from', ctx.author)}")
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -208,7 +219,7 @@ class Fun (commands.Cog):
         msg = list(text)
         regional_list = [self.regionals[x.lower()] if x.isalnum() or x in ["!", "?"] else x for x in msg]
         regional_output = '\u200b'.join(regional_list)
-        await ctx.send(f"{regional_output}\n\n**-- from {ctx.author.name}#{ctx.author.discriminator}**")
+        await ctx.send(f"{regional_output}{await Fun.fun_checker(self, 'from', ctx.author)}")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -225,14 +236,14 @@ class Fun (commands.Cog):
             elif char == 't': text = text.replace('t','7')
             else:
                 pass
-        await ctx.send(f"{text}\n\n**-- from {ctx.author.name}#{ctx.author.discriminator}**")
+        await ctx.send(f"{text}{await Fun.fun_checker(self, 'from', ctx.author)}")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def mock(self, ctx, *, text=None):
         """Will mock a user."""
         if text == None: return
-        await ctx.send(f"{capitalize_2nd(text)}\nhttps://pyxis.nymag.com/v1/imgs/09c/923/65324bb3906b6865f904a72f8f8a908541-16-spongebob-explainer.rsquare.w700.jpg\n\n**-- from {ctx.author.name}#{ctx.author.discriminator}**")
+        await ctx.send(f"{capitalize_2nd(text)}\nhttps://pyxis.nymag.com/v1/imgs/09c/923/65324bb3906b6865f904a72f8f8a908541-16-spongebob-explainer.rsquare.w700.jpg{await Fun.fun_checker(self, 'from', ctx.author)}")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -240,7 +251,7 @@ class Fun (commands.Cog):
         """Returns a random useless site."""
         await ctx.send(random.choice(uselessweb['uselessweb']))
 
-    @commands.command(disabled=True)
+    @commands.command(enabled=False)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def spoiler(self, ctx, *, text=None):
         """Returns the text, but spoilered."""

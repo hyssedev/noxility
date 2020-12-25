@@ -11,11 +11,6 @@ class Events (commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        # top.gg autopost
-        self.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4NTEyODIyODIxMjcwMzIzMyIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA4NzI1Mjg0fQ.IdeT0YpZOGa-fch94gGFPwcnQgIK1uBvp2sxAlrsbmI'  # set this to your DBL token
-        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='=nSebdFy$x?AAshZ!VaX8a$fj', webhook_port=5000, autopost=True)
-        # self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True)  # Autopost will post your guild count every 30 minutes
-
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-----Logged in as {self.bot.user.name}.-----")
@@ -83,7 +78,6 @@ class Events (commands.Cog):
             await ctx.send("Seems like you're giving me a bad argument.")
         elif isinstance(error, commands.TooManyArguments):
             await ctx.send("Error, you're giving me too many arguments.")
-
         """
 
     @commands.Cog.listener()
@@ -104,7 +98,6 @@ class Events (commands.Cog):
         user = self.bot.get_user(int(data['user']))
         embed = discord.Embed(colour=0xf2c203, description=f"**{user}** has just voted for **Noxility**, you can vote for the bot [here](https://top.gg/bot/785128228212703233/vote).")
         await channel.send(embed=embed)
-        print(data)
 
     @commands.Cog.listener()
     async def on_dbl_test(self, data):
@@ -112,7 +105,6 @@ class Events (commands.Cog):
         user = self.bot.get_user(int(data['user']))
         embed = discord.Embed(colour=0xf2c203, description=f"**{user}** has just voted for **Noxility**, you can vote for the bot [here](https://top.gg/bot/785128228212703233/vote).")
         await channel.send(embed=embed)
-        print(data)
 
 def setup(bot):
     bot.add_cog(Events(bot))
