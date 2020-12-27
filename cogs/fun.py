@@ -57,6 +57,12 @@ class Fun (commands.Cog):
         elif cmd == 'hot': return random.randint(0, 100) if not await self.bot.dblpy.get_user_vote(member.id) else random.randint(30, 100)
         elif cmd == 'from': return f'\n\n**-- from {member.name}#{member.discriminator}**' if not await self.bot.dblpy.get_user_vote(member.id) else ''
 
+    async def tip(self, ctx):
+        if not await self.bot.dblpy.get_user_vote(ctx.author.id):
+            return f'\n\n**For voting, you receive 30% better odds, in your favor, for fun commands and more! You can type `nox vote` to vote and get these benefits!**'  if random.randint(0,15) == 5 else ' ' 
+        else:
+            return ''
+
     @commands.command(aliases=["pp", "ppsize"])
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def penis(self, ctx, member:discord.Member=None):
@@ -65,7 +71,7 @@ class Fun (commands.Cog):
         member = ctx.author if not member else member 
         embed = discord.Embed(colour=0xf2c203)
         size = await Fun.fun_checker(self, 'penis', member)
-        embed.add_field(name="PP size", value=f"{member.name+'`s' if member != ctx.author else 'Your'} PP size is **{size}cm**.\n8{'='*int(size/2)}D")
+        embed.add_field(name="PP size", value=f"{member.name+'`s' if member != ctx.author else 'Your'} PP size is **{size}cm**.\n8{'='*int(size/2)}D{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -75,7 +81,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Gay checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'howgay', member)}%** gay.")
+        embed.add_field(name="Gay checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'howgay', member)}%** gay.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command(name="8ball")
@@ -84,7 +90,7 @@ class Fun (commands.Cog):
         """Tells you the bot's opinion to your answers."""
         if args == None: return await ctx.send("What do you want to ask me?", delete_after=5)
         answers = ['As I see it, yes.', 'Ask again later.', 'Better not tell you now.', 'Cannot predict now.', 'Concentrate and ask again.', 'Don’t count on it.', 'It is certain.', 'It is decidedly so.', 'Most likely.', 'My reply is no.', 'My sources say no.', 'Reply hazy, try again.', 'Signs point to yes.', 'Very doubtful.', 'Without a doubt.', 'Yes.', 'You may rely on it.', 'Yes – definitely.']
-        await ctx.send(random.choice(answers))
+        await ctx.send(f"{random.choice(answers)}{await Fun.tip(self, ctx)}")
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -92,7 +98,7 @@ class Fun (commands.Cog):
         """Inserts clapping emojis between your words."""
         if text == None: return
         if " " not in text: return await ctx.send("Error, I need at least a space to replace.", delete_after=5)
-        await ctx.send(text.replace(' ', ' \U0001f44f ')+f"\n\n**-- from {ctx.author.name}#{ctx.author.discriminator}**")
+        await ctx.send(text.replace(' ', ' \U0001f44f ')+ f"{await Fun.fun_checker(self, 'from', ctx.author)}{await Fun.tip(self, ctx)}")
 
     @commands.command(aliases=["stink"])
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -101,7 +107,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Stink checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'stinky', member)}%** stinky.")
+        embed.add_field(name="Stink checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'stinky', member)}%** stinky.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -111,7 +117,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="SIMP checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'simp', member)}%** simp.")
+        embed.add_field(name="SIMP checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'simp', member)}%** simp.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -121,7 +127,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Sad checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'howsad', member)}%** sad.")
+        embed.add_field(name="Sad checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'howsad', member)}%** sad.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -131,7 +137,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Hot checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'hot', member)}%** hot.")
+        embed.add_field(name="Hot checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'hot', member)}%** hot.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -163,7 +169,7 @@ class Fun (commands.Cog):
     async def reverse(self, ctx, *, text=None):
         """.txet deificeps sesreveR"""
         if text == None: return
-        await ctx.send(f"{str(text)[::-1]}{await Fun.fun_checker(self, 'from', ctx.author)}")
+        await ctx.send(f"{str(text)[::-1]}{await Fun.fun_checker(self, 'from', ctx.author)}{await Fun.tip(self, ctx)}")
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -171,7 +177,7 @@ class Fun (commands.Cog):
         """Pee on someone."""
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member= ctx.author if not member else member
-        await ctx.send(f"**{ctx.author.name}** peed on **{'himself' if member == ctx.author else member.name}**.")
+        await ctx.send(f"**{ctx.author.name}** peed on **{'himself' if member == ctx.author else member.name}**.{await Fun.tip(self, ctx)}")
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -179,13 +185,13 @@ class Fun (commands.Cog):
         """Poop on someone."""
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member= ctx.author if not member else member
-        await ctx.send(f"**{ctx.author.name}** pooped on **{'himself' if member == ctx.author else member.name}**.")
+        await ctx.send(f"**{ctx.author.name}** pooped on **{'himself' if member == ctx.author else member.name}**.{await Fun.tip(self, ctx)}")
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def coinflip(self, ctx):
         """Flip a coin."""
-        await ctx.send(f"You flipped a coin and it landed on **{random.choice(['tails', 'heads'])}**.")
+        await ctx.send(f"You flipped a coin and it landed on **{random.choice(['tails', 'heads'])}**.{await Fun.tip(self, ctx)}")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -219,7 +225,7 @@ class Fun (commands.Cog):
         msg = list(text)
         regional_list = [self.regionals[x.lower()] if x.isalnum() or x in ["!", "?"] else x for x in msg]
         regional_output = '\u200b'.join(regional_list)
-        await ctx.send(f"{regional_output}{await Fun.fun_checker(self, 'from', ctx.author)}")
+        await ctx.send(f"{regional_output}{await Fun.fun_checker(self, 'from', ctx.author)}{await Fun.tip(self, ctx)}")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -236,14 +242,14 @@ class Fun (commands.Cog):
             elif char == 't': text = text.replace('t','7')
             else:
                 pass
-        await ctx.send(f"{text}{await Fun.fun_checker(self, 'from', ctx.author)}")
+        await ctx.send(f"{text}{await Fun.fun_checker(self, 'from', ctx.author)}{await Fun.tip(self, ctx)}")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def mock(self, ctx, *, text=None):
         """Will mock a user."""
         if text == None: return
-        await ctx.send(f"{capitalize_2nd(text)}\nhttps://pyxis.nymag.com/v1/imgs/09c/923/65324bb3906b6865f904a72f8f8a908541-16-spongebob-explainer.rsquare.w700.jpg{await Fun.fun_checker(self, 'from', ctx.author)}")
+        await ctx.send(f"{capitalize_2nd(text)}\nhttps://pyxis.nymag.com/v1/imgs/09c/923/65324bb3906b6865f904a72f8f8a908541-16-spongebob-explainer.rsquare.w700.jpg{await Fun.fun_checker(self, 'from', ctx.author)}{await Fun.tip(self, ctx)}")
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
