@@ -67,9 +67,10 @@ class Mod (commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def ban(self, ctx, member: utils.utils.MemberID):
         """Bans specified user. Works even if the member is not in the current guild."""
-        # if member == ctx.author.id: return await ctx.send(f"Error, you can't do this to yourself.")
-        # if member == ctx.bot.user.id: return await ctx.send("Error, I can't do this to myself.")
-        if ctx.guild.me.top_role <= member.top_role: return await ctx.send(f"Error, you can't do this because my role is lower than **{member.name}**.")
+        if '_Hackban' not in str(type(member)):
+            if member == ctx.author: return await ctx.send(f"Error, you can't do this to yourself.")
+            if member == ctx.bot.user: return await ctx.send("Error, I can't do this to myself.")
+            if ctx.guild.me.top_role <= member.top_role: return await ctx.send(f"Error, you can't do this because my role is lower than **{member.name}**.")
         try:
             if ctx.author.id != ctx.guild.owner.id:
                 if ctx.author.top_role <= member.top_role: return await ctx.send(f"Error, you can't do this because **{member.name}** has a higher role than you do.")
