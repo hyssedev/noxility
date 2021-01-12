@@ -59,7 +59,7 @@ class Fun (commands.Cog):
 
     async def tip(self, ctx):
         if not await self.bot.dblpy.get_user_vote(ctx.author.id):
-            return f'\n\n**For voting, you receive 30% better odds, in your favor, for fun commands and more! You can type `nox vote` to vote and get these benefits!**'  if random.randint(0,15) == 5 else ' ' 
+            return f'\n\n**For voting, you receive 30% better odds, in your favor, for fun commands and more! You can type `nox vote` to vote and get these benefits!**'  if random.randint(0,3) == 3 else ' ' 
         else:
             return ''
 
@@ -71,7 +71,7 @@ class Fun (commands.Cog):
         member = ctx.author if not member else member 
         embed = discord.Embed(colour=0xf2c203)
         size = await Fun.fun_checker(self, 'penis', member)
-        embed.add_field(name="PP size", value=f"{member.name+'`s' if member != ctx.author else 'Your'} PP size is **{size}cm**.\n8{'='*int(size/2)}D{await Fun.tip(self, ctx)}")
+        embed.add_field(name="PP size", value=f"{member.name if member != ctx.author else ctx.author.name}'s PP size is **{size}cm**.\n8{'='*int(size/2)}D{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -81,7 +81,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Gay checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'howgay', member)}%** gay.{await Fun.tip(self, ctx)}")
+        embed.add_field(name="Gay checker", value=f"{member.name if member != ctx.author else ctx.author.name} is **{await Fun.fun_checker(self, 'howgay', member)}%** gay.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command(name="8ball")
@@ -107,7 +107,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Stink checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'stinky', member)}%** stinky.{await Fun.tip(self, ctx)}")
+        embed.add_field(name="Stink checker", value=f"{member.name if member != ctx.author else ctx.author.name} is **{await Fun.fun_checker(self, 'stinky', member)}%** stinky.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -117,7 +117,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="SIMP checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'simp', member)}%** simp.{await Fun.tip(self, ctx)}")
+        embed.add_field(name="SIMP checker", value=f"{member.name if member != ctx.author else ctx.author.name} is **{await Fun.fun_checker(self, 'simp', member)}%** simp.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -127,7 +127,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Sad checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'howsad', member)}%** sad.{await Fun.tip(self, ctx)}")
+        embed.add_field(name="Sad checker", value=f"{member.name if member != ctx.author else ctx.author.name} is **{await Fun.fun_checker(self, 'howsad', member)}%** sad.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -137,7 +137,7 @@ class Fun (commands.Cog):
         if member == ctx.guild.me: return await ctx.send("Error, you can't use this on myself.", delete_after=5)
         member = ctx.author if not member else member
         embed = discord.Embed(colour=0xf2c203)
-        embed.add_field(name="Hot checker", value=f"{member.name+' is' if member != ctx.author else 'You are'} **{await Fun.fun_checker(self, 'hot', member)}%** hot.{await Fun.tip(self, ctx)}")
+        embed.add_field(name="Hot checker", value=f"{member.name if member != ctx.author else ctx.author.name} is **{await Fun.fun_checker(self, 'hot', member)}%** hot.{await Fun.tip(self, ctx)}")
         await ctx.send(embed=embed)
 
     @commands.command()

@@ -22,10 +22,14 @@ class Bot_Info (commands.Cog):
         before = time.monotonic()
         await ctx.trigger_typing()
         ping = int((time.monotonic() - before) * 1000)
+        counter = 0
+        for i in self.bot.guilds:
+            for j in i.channels:
+                counter += 1
         embed = discord.Embed(title="Noxility", description="Noxility is a powerful bot with all kinds of commands.", colour=0xf2c203)
         embed.set_footer(text="Thank you for using Noxility!", icon_url=self.bot.user.avatar_url)
         embed.add_field(name=f"**General Information**", value=f"{emote} **Developer:** {self.bot.get_user(199375184057073664)}\n{emote} **Library:** discord.py {discord.__version__}\n{emote} **Uptime**: {human_timedelta(self.bot.uptime)}\n{emote} **Created**: 6 December 2020 ({human_timedelta(datetime.datetime(2020, 12, 6))} ago)\n{emote} **Python:** {platform.python_version()}", inline=False)
-        embed.add_field(name=f"**Stats**",  value=f"{emote} **Commands loaded:** {len([i for i in self.bot.walk_commands()])}\n{emote} **Servers:** {str(len(self.bot.guilds))}\n{emote} **Users:** {len(self.bot.users)}\n{emote} **Latency:** Websocket: {int(round(self.bot.latency * 1000, 1))}ms, Message: {ping}ms", inline=False)
+        embed.add_field(name=f"**Stats**",  value=f"{emote} **Commands loaded:** {len([i for i in self.bot.walk_commands()])}\n{emote} **Cogs:** {len(self.bot.cogs)}\n{emote} **Servers:** {str(len(self.bot.guilds))}\n{emote} **Channels:** {counter}\n{emote} **Users:** {len(self.bot.users)}\n{emote} **Latency:** Websocket: {int(round(self.bot.latency * 1000, 1))}ms, Message: {ping}ms", inline=False)
         embed.add_field(name=f"**Links**", value=f"{emote} **Support Server:** [Noxility](https://discord.gg/BnzYDcKWbt)\n{emote} **Invite:** [click here](https://discord.com/api/oauth2/authorize?client_id=785128228212703233&permissions=8&scope=bot)\n{emote} **Vote:** [click here](https://top.gg/bot/785128228212703233/vote)", inline=False)
         await ctx.send(embed=embed)
 
