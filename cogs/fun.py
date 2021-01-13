@@ -257,15 +257,14 @@ class Fun (commands.Cog):
         """Returns a random useless site."""
         await ctx.send(random.choice(uselessweb['uselessweb']))
 
-    @commands.command(enabled=False)
+    @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def spoiler(self, ctx, *, text=None):
         """Returns the text, but spoilered."""
         if text == None: return await ctx.send("What text do you want me to return spoilered?")
-        for char in text: 
-            # if char == " ": text.replace(char, f"{char}")
-            text = text.replace(char, f"||{char}||")
-        await ctx.send(text)
+        for word in text.split():
+            text = text.replace(word, f"||{word}||")
+        await ctx.send(f"{text}{await Fun.fun_checker(self, 'from', ctx.author)}{await Fun.tip(self, ctx)}")
 
 def setup(bot):
     bot.add_cog(Fun(bot))
