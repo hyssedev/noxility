@@ -164,6 +164,7 @@ class Developer (commands.Cog):
             except Exception:
                 desired_trace = traceback.format_exc()
                 embed.add_field(name=f"Failed to load: `{ext[:-3]}`", value=desired_trace, inline=False)
+            await ctx.send(embed=embed)
 
     @commands.group(invoke_without_command=True, name="command")
     @commands.is_owner()
@@ -182,6 +183,7 @@ class Developer (commands.Cog):
         except:
             desired_trace = traceback.format_exc()
             embed.add_field(name=f"Failed to disable: `{command}`", value=desired_trace, inline=False)
+        await ctx.send(embed=embed)
 
     # ----- updating activity every hour ------
     @tasks.loop(minutes=60)
