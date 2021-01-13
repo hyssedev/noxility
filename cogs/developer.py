@@ -165,6 +165,23 @@ class Developer (commands.Cog):
                 desired_trace = traceback.format_exc()
                 embed.add_field(name=f"Failed to load: `{ext[:-3]}`", value=desired_trace, inline=False)
 
+    @commands.group(invoke_without_command=True, name="command")
+    @commands.is_owner()
+    async def _command(self, ctx):
+        if ctx.invoked_subcommand == None: return
+
+    @_command.command()
+    @commands.is_owner()
+    async def disable(self, ctx, command=None):
+        if command is None: await ctx.send(f"Please specify which command to disable.")
+        embed = discord.Embed(title="Command disabled", color=0xf2c203, timestamp=ctx.message.created_at)
+
+        try:
+            self.bot.get_command(f"{command}").enabled=False
+            embed.add_field(name=f"Disabled: `{command}`", value='\uFEFF', inline=False)
+        except:
+            desired_trace = traceback.format_exc()
+            embed.add_field(name=f"Failed to disable: `{command}`", value=desired_trace, inline=False)
 
     # ----- updating activity every hour ------
     @tasks.loop(minutes=60)
