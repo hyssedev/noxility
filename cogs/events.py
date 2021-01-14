@@ -81,6 +81,13 @@ class Events (commands.Cog):
         """
 
     @commands.Cog.listener()
+    async def on_command(self, ctx):
+        try:
+            self.bot.usage[ctx.command.qualified_name] += 1
+        except KeyError:
+            self.bot.usage[ctx.command.qualified_name] = 1
+
+    @commands.Cog.listener()
     async def on_message(self, message):
         # Ignoring messages sent by the bot itself
         if message.author.id == self.bot.user.id:

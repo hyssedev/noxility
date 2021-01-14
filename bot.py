@@ -8,6 +8,7 @@ logging.basicConfig(level=logging.INFO)
 # top gg stuff
 token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4NTEyODIyODIxMjcwMzIzMyIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA4NzI1Mjg0fQ.IdeT0YpZOGa-fch94gGFPwcnQgIK1uBvp2sxAlrsbmI'  # set this to your DBL token
 bot.dblpy = dbl.DBLClient(bot, token, webhook_path='/dblwebhook', webhook_auth='=nSebdFy$x?AAshZ!VaX8a$fj', webhook_port=5000, autopost=True)
+bot.usage = {}
 
 for cog in os.listdir("cogs"):
     if cog.endswith(".py") and not cog.startswith("_"):
