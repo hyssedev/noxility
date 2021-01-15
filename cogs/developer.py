@@ -192,7 +192,7 @@ class Developer (commands.Cog):
         embed = discord.Embed(title="Command enabled", color=0xf2c203, timestamp=ctx.message.created_at)
 
         try:
-            self.bot.get_command(f"{command}").enabled=False
+            self.bot.get_command(f"{command}").enabled=True
             embed.add_field(name=f"Enabled: `{command}`", value='\uFEFF', inline=False)
         except:
             desired_trace = traceback.format_exc()
