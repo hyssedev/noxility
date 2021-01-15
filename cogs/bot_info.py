@@ -113,5 +113,10 @@ class Bot_Info (commands.Cog):
             # if author has server messages disabled, send message to that channel
             await ctx.send(f"{emote} **Noxility Vote Link** - https://top.gg/bot/785128228212703233/vote\n\nThank you for voting me!")
 
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def whatshard(self, ctx):
+        await ctx.send(f"This guild is on shard ID **{ctx.guild.shard_id}**.")
+
 def setup(bot):
     bot.add_cog(Bot_Info(bot))
