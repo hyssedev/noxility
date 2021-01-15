@@ -266,5 +266,13 @@ class Fun (commands.Cog):
             text = text.replace(word, f"||{word}||")
         await ctx.send(f"{text}{await Fun.fun_checker(self, 'from', ctx.author)}{await Fun.tip(self, ctx)}")
 
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def choose(self, ctx, *, text=None):
+        """Returns what the bot has chosen. To be able to use this command, separate your options with `|`."""
+        if text == None: return await ctx.send("What choices do you give me?")
+        choice = random.choice(text.split("|"))
+        await ctx.send(f"I choose: **{choice}**{await Fun.fun_checker(self, 'from', ctx.author)}{await Fun.tip(self, ctx)}")
+
 def setup(bot):
     bot.add_cog(Fun(bot))

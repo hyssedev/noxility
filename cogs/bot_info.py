@@ -116,6 +116,7 @@ class Bot_Info (commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def whatshard(self, ctx):
+        """Shows the shard the current server is in."""
         await ctx.send(f"This guild is on shard ID **{ctx.guild.shard_id}**.")
 
 def setup(bot):
