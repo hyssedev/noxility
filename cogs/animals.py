@@ -110,5 +110,19 @@ class Animals (commands.Cog):
         except:
             raise discord.errors.Forbidden
 
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def dogfact(self, ctx):
+        """Tells you a random dog fact."""
+        try:
+            async with aiohttp.ClientSession(headers={}) as cs:
+                async with cs.get('https://some-random-api.ml/facts/dog') as r:
+                    res = await r.json()
+                    embed = discord.Embed(colour=0xf2c203)
+                    embed.add_field(name="**Here is your random dog fact. 🐶**", value=res['fact'])
+                    await ctx.send(embed=embed)
+        except:
+            raise discord.errors.Forbidden
+
 def setup(bot):
     bot.add_cog(Animals(bot))
