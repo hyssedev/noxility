@@ -195,30 +195,6 @@ class Fun (commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def dog(self, ctx):
-        """Shows you a dog picture."""
-        try:
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get('https://dog.ceo/api/breeds/image/random') as r:
-                    res = await r.json()
-                    await ctx.send(res['message'])
-        except:
-            raise discord.errors.Forbidden
-
-    @commands.command()
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def cat(self, ctx):
-        """Shows you a cat picture."""
-        try:
-            async with aiohttp.ClientSession(headers={}) as cs:
-                async with cs.get('https://api.thecatapi.com/v1/images/search') as r:
-                    res = await r.json()
-                    await ctx.send(res[0]['url'])
-        except:
-            raise discord.errors.Forbidden
-
-    @commands.command()
-    @commands.cooldown(1, 10, commands.BucketType.user)
     async def emojify(self, ctx, *, text=None):
         """Emojifies the specified text."""
         if text == None: return await ctx.send("What text do you want me to emojify?")
