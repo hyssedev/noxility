@@ -96,5 +96,19 @@ class Animals (commands.Cog):
         except:
             raise discord.errors.Forbidden
 
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def koala(self, ctx):
+        """Shows you a koala picture."""
+        try:
+            async with aiohttp.ClientSession(headers={}) as cs:
+                async with cs.get('https://some-random-api.ml/img/koala') as r:
+                    res = await r.json()
+                    embed = discord.Embed(description="**Here is your koala picture. 🐨**", colour=0xf2c203)
+                    embed.set_image(url=res['link'])
+                    await ctx.send(embed=embed)
+        except:
+            raise discord.errors.Forbidden
+
 def setup(bot):
     bot.add_cog(Animals(bot))
