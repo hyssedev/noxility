@@ -294,5 +294,16 @@ class Fun (commands.Cog):
         except:
             raise discord.errors.Forbidden
 
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def hug(self, ctx, member: discord.Member = None):
+        """Returns a gay picture or gif of the specified user."""
+        member = ctx.author if not member else member
+        embed = discord.Embed(colour=0xf2c203)
+        try:
+            embed.set_image(url=f'https://some-random-api.ml/canvas/gay?avatar={member.avatar_url_as(format='png')}')
+        except:
+            raise discord.errors.Forbidden
+
 def setup(bot):
     bot.add_cog(Fun(bot))
