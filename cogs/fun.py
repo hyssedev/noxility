@@ -249,6 +249,21 @@ class Fun (commands.Cog):
         if text == None: return await ctx.send("What choices do you give me?")
         choice = random.choice(text.split("|"))
         await ctx.send(f"I choose: **{choice}**{await Fun.fun_checker(self, 'from', ctx.author)}{await Fun.tip(self, ctx)}")
+    
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def wink(self, ctx):
+        """Returns a winking picture or gif."""
+        try:
+            async with aiohttp.ClientSession(headers={}) as cs:
+                async with cs.get('https://some-random-api.ml/animu/wink') as r:
+                    res = await r.json()
+                    embed = discord.Embed(description="**wink wink UwU**", colour=0xf2c203)
+                    embed.set_image(url=res['link'])
+                    await ctx.send(embed=embed)
+        except:
+            raise discord.errors.Forbidden
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
