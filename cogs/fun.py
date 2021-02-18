@@ -267,13 +267,28 @@ class Fun (commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def pat(self, ctx, member: discord.Member = None):
-        """Returns a winking picture or gif."""
+        """Returns a patting picture or gif."""
         if member == None: return await ctx.send("Error, who do you want to pat?", delete_after=5)
         try:
             async with aiohttp.ClientSession(headers={}) as cs:
                 async with cs.get('https://some-random-api.ml/animu/pat') as r:
                     res = await r.json()
                     embed = discord.Embed(description=f"**{ctx.author.name} patted {member.name} on his head**", colour=0xf2c203)
+                    embed.set_image(url=res['link'])
+                    await ctx.send(embed=embed)
+        except:
+            raise discord.errors.Forbidden
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def hug(self, ctx, member: discord.Member = None):
+        """Returns a hugging picture or gif."""
+        if member == None: return await ctx.send("Error, who do you want to hug?", delete_after=5)
+        try:
+            async with aiohttp.ClientSession(headers={}) as cs:
+                async with cs.get('https://some-random-api.ml/animu/hug') as r:
+                    res = await r.json()
+                    embed = discord.Embed(description=f"**{ctx.author.name} hugged {member.name}**", colour=0xf2c203)
                     embed.set_image(url=res['link'])
                     await ctx.send(embed=embed)
         except:
