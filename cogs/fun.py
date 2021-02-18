@@ -264,6 +264,20 @@ class Fun (commands.Cog):
         except:
             raise discord.errors.Forbidden
 
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def pat(self, ctx, member: discord.Member = None):
+        """Returns a winking picture or gif."""
+        if member == None: return await ctx.send("Error, who do you want to pat?", delete_after=5)
+        try:
+            async with aiohttp.ClientSession(headers={}) as cs:
+                async with cs.get('https://some-random-api.ml/animu/pat') as r:
+                    res = await r.json()
+                    embed = discord.Embed(description=f"**{ctx.author.name} patted {member.name} on his head**", colour=0xf2c203)
+                    embed.set_image(url=res['link'])
+                    await ctx.send(embed=embed)
+        except:
+            raise discord.errors.Forbidden
 
 def setup(bot):
     bot.add_cog(Fun(bot))
