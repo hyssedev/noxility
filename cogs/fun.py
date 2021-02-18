@@ -268,7 +268,8 @@ class Fun (commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def pat(self, ctx, member: discord.Member = None):
         """Returns a patting picture or gif."""
-        if member == None: return await ctx.send("Error, who do you want to pat?", delete_after=5)
+        member = ctx.author if not member else member
+        if member == ctx.author: return await ctx.send("Error, you can't pat yourself.", delete_after=5)
         try:
             async with aiohttp.ClientSession(headers={}) as cs:
                 async with cs.get('https://some-random-api.ml/animu/pat') as r:
@@ -283,7 +284,8 @@ class Fun (commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def hug(self, ctx, member: discord.Member = None):
         """Returns a hugging picture or gif."""
-        if member == None: return await ctx.send("Error, who do you want to hug?", delete_after=5)
+        member = ctx.author if not member else member
+        if member == ctx.author: return await ctx.send("Error, you can't hug yourself.", delete_after=5)
         try:
             async with aiohttp.ClientSession(headers={}) as cs:
                 async with cs.get('https://some-random-api.ml/animu/hug') as r:
@@ -296,12 +298,13 @@ class Fun (commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def hug(self, ctx, member: discord.Member = None):
+    async def gay(self, ctx, member: discord.Member = None):
         """Returns a gay picture or gif of the specified user."""
         member = ctx.author if not member else member
-        embed = discord.Embed(colour=0xf2c203)
         try:
-            embed.set_image(url=f'https://some-random-api.ml/canvas/gay?avatar={member.avatar_url_as(format='png')}')
+            embed = discord.Embed(description="🏳️‍🌈", colour=0xf2c203)
+            embed.set_image(url=f"https://some-random-api.ml/canvas/gay?avatar={member.avatar_url_as(format='png')}")
+            await ctx.send(embed=embed)
         except:
             raise discord.errors.Forbidden
 
