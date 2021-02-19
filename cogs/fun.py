@@ -266,6 +266,20 @@ class Fun (commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
+    async def facepalm(self, ctx):
+        """Returns a facepalm picture or gif."""
+        try:
+            async with aiohttp.ClientSession(headers={}) as cs:
+                async with cs.get('https://some-random-api.ml/animu/face-palm') as r:
+                    res = await r.json()
+                    embed = discord.Embed(description="**facepalm 🤦**", colour=0xf2c203)
+                    embed.set_image(url=res['link'])
+                    await ctx.send(embed=embed)
+        except:
+            raise discord.errors.Forbidden
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def pat(self, ctx, member: discord.Member = None):
         """Returns a patting picture or gif."""
         member = ctx.author if not member else member
