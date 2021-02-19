@@ -322,5 +322,17 @@ class Fun (commands.Cog):
         except:
             raise discord.errors.Forbidden
 
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def triggered(self, ctx, member: discord.Member = None):
+        """Returns a triggered gif of the specified user."""
+        member = ctx.author if not member else member
+        try:
+            embed = discord.Embed(description="🏳️‍🌈", colour=0xf2c203)
+            embed.set_image(url=f"https://some-random-api.ml/canvas/triggered?avatar={member.avatar_url_as(format='png')}")
+            await ctx.send(embed=embed)
+        except:
+            raise discord.errors.Forbidden
+
 def setup(bot):
     bot.add_cog(Fun(bot))
