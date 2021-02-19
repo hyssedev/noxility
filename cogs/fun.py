@@ -313,7 +313,7 @@ class Fun (commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def gay(self, ctx, member: discord.Member = None):
-        """Returns a gay picture or gif of the specified user."""
+        """Returns a gay picture of the specified user."""
         member = ctx.author if not member else member
         try:
             embed = discord.Embed(description="🏳️‍🌈", colour=0xf2c203)
@@ -324,12 +324,12 @@ class Fun (commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def triggered(self, ctx, member: discord.Member = None):
-        """Returns a triggered gif of the specified user."""
+    async def wasted(self, ctx, member: discord.Member = None):
+        """Returns a wasted picture of the specified user."""
         member = ctx.author if not member else member
         try:
-            embed = discord.Embed(description="🏳️‍🌈", colour=0xf2c203)
-            embed.set_image(url=f"https://some-random-api.ml/canvas/triggered?avatar={member.avatar_url_as(format='png')}")
+            embed = discord.Embed(description="wasted! 👮", colour=0xf2c203)
+            embed.set_image(url=f"https://some-random-api.ml/canvas/wasted?avatar={member.avatar_url_as(format='png')}")
             await ctx.send(embed=embed)
         except:
             raise discord.errors.Forbidden
