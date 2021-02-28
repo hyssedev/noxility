@@ -1,8 +1,7 @@
 from discord.ext import commands
 import discord, os, asyncio, logging, dbl
 import utils.utils
-from . import secret
-
+import secret
 bot = commands.AutoShardedBot(command_prefix=['nox ', 'Nox ', 'NOX ', 'noxility', 'Noxility'], owner_id=199375184057073664, intents=discord.Intents.all(), help_command=utils.utils.EmbedHelpCommand(), description="Noxility is a powerful bot with all kinds of commands, ready to make your server more fun & enjoyable.", shard_count=2)
 logging.basicConfig(level=logging.INFO) 
 
