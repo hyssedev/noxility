@@ -1,3 +1,6 @@
+# Archived!
+This project is no longer maintained because I do not want to host a bot anymore and it's been some time since the bot has been offline, therefore all this code is free to use. Have fun and check my other projects!
+
 # Noxility
 
 Noxility is a powerful and interactive discord bot written in discord.py, with all kinds of commands, ready to make your server more fun and enjoyable. 
